@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 nav {
@@ -34,4 +35,37 @@ nav a {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+}
+
+.post {
+    height: 20em;
+    width: 50%;
+    margin: 0 auto;
+    font-family: 'Lora', sans-serif;
+    line-height: 1.5em;
+    border-bottom: 1px solid rgb(210, 210, 210);
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow: hidden;
+}
+
+.post img {
+    width: 35%;
+    float: left;
+    margin-right: 1em;
+    min-width: 20em;
+}
+
+.post h1 {
+    margin-bottom: 1em;
+    line-height: 1em;
+}
+
+.post-main {
+    margin-left: 1em;
+}
+
+.post-info {
+    margin-top: 1em;
+    color: rgb(160, 160, 160);
 }
