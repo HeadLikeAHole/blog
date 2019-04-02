@@ -2,70 +2,319 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    /*stops long words from overflowing*/
+    overflow-wrap: break-word;
+    font-family: 'Lora', sans-serif;
+    /*removes dotted outline around title on return to post list from detail*/
+    outline: none;
+    color: rgb(43, 45, 50);
 }
 
 nav {
     display: flex;
     background-color: rgb(43, 45, 50);
-    height: 4em;
+    height: 4rem;
     align-items: center;
 }
 
 nav a {
-    color: white;
+    color: #c8c8c8;
     text-decoration: none;
-    margin: 0.5em;
-    font-size: 1.1em;
+    margin: 0.5rem;
+    font-size: 1.1rem;
 }
 
-#blog {
-    font-size: 2em;
+nav a:hover {
+    color: white;
+}
+
+nav button {
+    color: white;
+    background-color: rgb(154, 88, 181);
+    border: none;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.6rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+nav button:hover {
+    background-color: rgb(116, 67, 137);
+}
+
+#logo {
+    font-size: 2rem;
+    color: white;
 }
 
 .left-bar {
     flex: 1;
 }
 
+.right-bar {
+    margin-right: 1rem;
+}
+
 .right-bar a {
     justify-content: right;
 }
 
-.container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.post {
-    height: 20em;
+.post-list {
+    height: 20rem;
     width: 50%;
     margin: 0 auto;
-    font-family: 'Lora', sans-serif;
-    line-height: 1.5em;
+    line-height: 1.5rem;
     border-bottom: 1px solid rgb(210, 210, 210);
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
     overflow: hidden;
 }
 
-.post img {
+.post-list img {
+    display: inline-block;
+    vertical-align: top;
     width: 35%;
-    float: left;
-    margin-right: 1em;
-    min-width: 20em;
+    margin-right: 1rem;
+    min-width: 20rem;
+
 }
 
-.post h1 {
-    margin-bottom: 1em;
-    line-height: 1em;
+.post-list-block {
+    display: inline-block;
+    width: 60%;
 }
 
-.post-main {
-    margin-left: 1em;
-}
-
-.post-info {
-    margin-top: 1em;
+.post-list-info {
+    margin-top: 1rem;
     color: rgb(160, 160, 160);
 }
+
+.post-list h1, .post-detail h1 {
+    margin-bottom: 1rem;
+    line-height: 2.5rem;
+}
+
+.post-list a {
+    color: black;
+    text-decoration: none;
+}
+
+.post-list a:hover {
+    text-decoration: underline;
+}
+
+.post-detail {
+    width: 35%;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    font-family: 'Lora', sans-serif;
+    line-height: 1.8rem;
+    border-bottom: 1px solid rgb(210, 210, 210);
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.post-detail-info {
+    font-size: 1rem;
+    color: rgb(160, 160, 160);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgb(210, 210, 210);
+    border-bottom: 1px solid rgb(210, 210, 210);
+}
+
+.post-detail img {
+    width: 100%;
+    min-width: 20rem;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form {
+    font-size: 1.2rem;
+    width: 35%;
+    margin: 1rem auto;
+    border: 1px solid rgb(210, 210, 210);
+    box-shadow: 2px 2px 8px rgb(190, 190, 190);
+    padding: 1rem;
+}
+
+.form h2 {
+    border-bottom: 1px solid rgb(210, 210, 210);
+    margin-bottom: 2.5rem;
+
+}
+
+label {
+    display: block;
+    margin-top: 1.5rem;
+    clear: right;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+textarea {
+    display: block;
+    height: 2.3rem;
+    width: 100%;
+    padding: 0.7rem;
+    margin-top: 0.5rem;
+    font-family: inherit;
+    font-size: 1.1rem;
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 3px;
+}
+
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+textarea:focus {
+    border: 1px solid rgb(26, 202, 237);
+    box-shadow: 0 0 8px rgb(26, 202, 237);
+}
+
+
+/* makes current errors red */
+.errorlist li {
+    color: red;
+}
+
+textarea {
+    resize: vertical;
+    height: 20rem;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 2rem;
+    margin-right: 0.5rem;
+    font-family: inherit;
+    font-size: 1.2rem;
+    background-color: white;
+    border-radius: 3px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    border: none;
+    padding: 11px 17px;
+}
+
+.btn-sbm {
+    color: rgb(20, 162, 181);
+    border: 1px solid rgb(20, 162, 181);
+}
+
+.btn-sbm:hover {
+    color: white;
+    background-color: rgb(20, 162, 181);
+}
+
+.btn-cnl {
+    color: rgb(108, 117, 125);
+    border: 1px solid rgb(108, 117, 125);
+}
+
+.btn-cnl:hover {
+    color: white;
+    background-color: rgb(108, 117, 125);
+}
+
+.form a {
+    font-size: 1rem;
+    color: rgb(0, 123, 255);
+    text-decoration: none;
+}
+
+.form-footer {
+    color: rgb(130, 130, 130);
+    font-size: 1rem;
+    margin-right: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgb(210, 210, 210);
+}
+
+.helptext, form li {
+    color: rgb(130, 130, 130);
+    font-size: 1rem;
+}
+
+form ul {
+    margin-left: 2rem;
+}
+
+.profile {
+    width: 50%;
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 1rem;
+    border: 1px solid rgb(210, 210, 210);
+    box-shadow: 0 0 4px rgb(210, 210, 210);
+    font-size: 1.1rem;
+    padding: 0.5rem;
+}
+
+.profile h2 {
+    border-bottom: 1px solid rgb(210, 210, 210);
+    margin-bottom: 1rem;
+}
+
+.profile img {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.profile button {
+    width: 100%;
+    color: white;
+    background-color: rgb(0, 130, 240);
+    border: none;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.6rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile button:hover {
+    background-color: rgb(0, 100, 200);
+}
+
+.profile p {
+    margin-top: 0.5rem;
+}
+
+.profile-cng-del {
+    float: right;
+}
+
+.btn-cng-del {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: rgb(20, 162, 181);
+    background-color: white;
+    border: 1px solid rgb(20, 162, 181);
+    border-radius: 3px;
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-cng-del:hover {
+    color: white;
+    background-color: rgb(20, 162, 181);
+    border: none;
+    padding: 6px 10px;
+}
+

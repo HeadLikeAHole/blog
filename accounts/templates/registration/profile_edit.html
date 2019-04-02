@@ -1,0 +1,17 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+  {# add enctype so images are saved #}
+  <form method="post" enctype="multipart/form-data" class="form">{% csrf_token %}
+    <h2>Edit {{ user.username }}'s Profile</h2>
+    <div class="profile-cng-del">
+      <a href="{% url 'password_change' %}"><button type="button" class="btn-cng-del">Change password</button></a>
+      <a href=""><button type="button" class="btn-cng-del">Delete account</button></a>
+    </div>
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    <input type="submit" value="Save" class="btn btn-sbm">
+    {# type="button" prevents button from submitting the form #}
+    <a href="{% url 'profile' user.pk %}"><button type="button" class="btn btn-cnl">Cancel</button></a>
+  </form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Post Detail{% endblock %}
+
+{% block content %}
+  <div class="post-detail">
+    <h1>{{ post.title }}</h1>
+    <div class="post-detail-info">
+      Posted by {{ post.user }} {{ post.published|timesince }} ago
+    </div>
+    <img src="{{ post.image.url }}">
+    <p>{{post.text}}</p>
+  </div>
+{% endblock %}

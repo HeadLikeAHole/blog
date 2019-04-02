@@ -4,14 +4,16 @@
 
 {% block content %}
   {% for post in posts %}
-    <div class="post">
-      <img src="{{ post.image.url }}">
-      <div class="post-main">
-        <h1>{{ post.title }}</h1>
-        <p>{{post.text|truncatewords:30}}</p>
-      </div>
-      <div class="post-info">
-        Posted by {{ post.user }} {{ post.published|timesince }} ago
+    <div class="post-list">
+      <a href="{% url 'post_detail' post.slug %}"><img src="{{ post.image.url }}"></a>
+      <div class="post-list-block">
+        <div class="post-list-main">
+          <a href="{% url 'post_detail' post.slug %}"><h1>{{ post.title|truncatechars:70 }}</h1></a>
+          <p>{{ post.text|truncatechars:140 }}</p>
+        </div>
+        <div class="post-list-info">
+          Posted by {{ post.user }} {{ post.published|timesince }} ago
+        </div>
       </div>
     </div>
   {% endfor %}
