@@ -137,6 +137,7 @@ nav button:hover {
     width: 35%;
     margin: 1rem auto;
     border: 1px solid rgb(210, 210, 210);
+    border-radius: 3px;
     box-shadow: 2px 2px 8px rgb(190, 190, 190);
     padding: 1rem;
 }
@@ -201,27 +202,26 @@ textarea {
 }
 
 .btn:hover {
+    color: white;
     border: none;
     padding: 11px 17px;
 }
 
-.btn-sbm {
+.btn-blue {
     color: rgb(20, 162, 181);
     border: 1px solid rgb(20, 162, 181);
 }
 
-.btn-sbm:hover {
-    color: white;
+.btn-blue:hover {
     background-color: rgb(20, 162, 181);
 }
 
-.btn-cnl {
+.btn-gray {
     color: rgb(108, 117, 125);
     border: 1px solid rgb(108, 117, 125);
 }
 
-.btn-cnl:hover {
-    color: white;
+.btn-gray:hover {
     background-color: rgb(108, 117, 125);
 }
 
@@ -293,28 +293,87 @@ form ul {
     margin-top: 0.5rem;
 }
 
-.profile-cng-del {
+.profile-change-del {
     float: right;
 }
 
-.btn-cng-del {
+.btn-small {
     display: inline-block;
-    margin-right: 0.5rem;
+    margin-right: 0.3rem;
     font-family: inherit;
     font-size: 1rem;
-    color: rgb(20, 162, 181);
     background-color: white;
-    border: 1px solid rgb(20, 162, 181);
     border-radius: 3px;
     padding: 5px 9px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.btn-cng-del:hover {
+.btn-small:hover {
     color: white;
-    background-color: rgb(20, 162, 181);
     border: none;
     padding: 6px 10px;
 }
 
+.btn-red {
+    color: rgb(255, 60, 60);
+    border: 1px solid rgb(255, 60, 60);
+}
+
+.btn-red:hover {
+    background-color: rgb(255, 60, 60);
+}
+
+.edit-buttons {
+    float: right;
+}
+
+/*modal background*/
+#modal {
+    /*hidden by default*/
+    display: none;
+    /*stay in place*/
+    position: fixed;
+    /*sit on top*/
+    z-index: 1;
+    /*location of the box*/
+    padding-top: 6em;
+    width: 100%;
+    height: 100%;
+    /*enable scroll if needed*/
+    overflow: auto;
+    /*overflow-wrap: break-word;*/
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-body {
+    /*align child div*/
+    text-align: center;
+    /*overflow-wrap: break-word;*/
+    position: relative;
+    background-color: white;
+    margin: auto;
+    width: 35%;
+    font-size: 1.6rem;
+    padding: 1rem;
+    border: 1px solid #888;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation: moving-window;
+    animation-duration: 0.5s;
+}
+
+.modal-content {
+    /*align inside parent div*/
+    display: inline-block;
+}
+
+.modal-content p {
+    margin-bottom: 0.5rem;
+}
+
+/*add animation*/
+@keyframes moving-window {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}

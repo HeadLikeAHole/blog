@@ -22,7 +22,6 @@ def register(request):
 
 def profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
-
     return render(request, 'registration/profile.html', {'profile': profile})
 
 
@@ -39,9 +38,18 @@ def profile_edit(request):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
 
+    # item_to_delete is a context variable that gets displayed by delete modal
+    # url_name is context variable that gets inserted into delete button url tag
     context = {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'item_to_delete': 'account',
+        'url_name': 'profile_delete'
     }
 
     return render(request, 'registration/profile_edit.html', context)
+
+
+def profile_delete(request):
+    request.user.delete()
+    return redirect('home')

@@ -9,6 +9,19 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
+  <div id="modal">
+    <div class="modal-body">
+      <div class="modal-content">
+        <p>Are you sure you want to delete this {{ item_to_delete }}?</p>
+{# if view's render function sends url_name context variable it inserts url pattern name for appropriate delete view #}
+        <a href="{% if url_name and item %}{% url url_name item %}{% elif url_name %}{% url url_name %}{% endif %}">
+          <button class="btn-small btn-red">Yes, Delete</button></a>
+        <button class="btn-small btn-gray close-modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <nav class="navbar">
     <div class="left-bar">
       <a href="{% url 'home' %}" id="logo">Blog</a>
@@ -24,6 +37,9 @@
       {% endif %}
     </div>
   </nav>
+
   {% block content %}{% endblock %}
+
+  <script src="{% static 'posts/scripts.js' %}"></script>
 </body>
 </html>

@@ -7,6 +7,10 @@
     <h1>{{ post.title }}</h1>
     <div class="post-detail-info">
       Posted by {{ post.user }} {{ post.published|timesince }} ago
+      <div class="edit-buttons">
+        <a href="{% url 'post_edit' post.slug %}"><button class="btn-small btn-blue">Edit</button></a>
+        <button class="btn-small btn-red open-modal">Delete</button>
+      </div>
     </div>
     <img src="{{ post.image.url }}">
     <p>{{post.text}}</p>
