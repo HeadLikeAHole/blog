@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # put it before django apps so custom logout page loads before default one
     'posts.apps.PostsConfig',
     'accounts.apps.AccountsConfig',
+    'comments.apps.CommentsConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

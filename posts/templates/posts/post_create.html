@@ -1,9 +1,10 @@
 {% extends 'posts/base.html' %}
 
-{% block title %}Create Post{% endblock %}
+{% block title %}Blog Post{% endblock %}
 
 {% block content %}
-  <form method="post" class="form">{% csrf_token %}
+  {# enctype="multipart/form-data" enables saving of images #}
+  <form method="post" enctype="multipart/form-data" class="form">{% csrf_token %}
     <h2>Blog Post</h2>
     {{ form.as_p }}
     <input type="submit" value="Submit" class="btn btn-blue">

@@ -377,3 +377,77 @@ form ul {
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+
+.comments-info {
+    color: rgb(160, 160, 160);
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgb(210, 210, 210);
+    border-bottom: 1px solid rgb(210, 210, 210);
+}
+
+.comments-info p {
+    display: inline-block;
+    color: rgb(160, 160, 160);
+}
+
+/*.comments-left {*/
+    /*float: left;*/
+/*}*/
+
+.comments-right {
+    float: right;
+}
+
+.comments-info a {
+    color: rgb(160, 160, 160);
+    text-decoration: none;
+}
+
+.comments-info a:hover {
+    color: rgb(43, 45, 50);
+}
+
+.comment {
+    margin-top: 2rem;
+}
+
+.comment textarea {
+    height: 8rem;
+    margin-bottom: 0.5rem;
+}
+
+.comment button {
+    float: right;
+}
+
+.comment p {
+    text-align: center;
+    clear: right;
+    margin-top: 5rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid rgb(210, 210, 210);
+    border-bottom: 1px solid rgb(210, 210, 210);
+}
+
+.btn-like {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: white;
+    background-color: rgb(19, 151, 255);
+    border: none;
+    border-radius: 3px;
+    padding: 3px 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-like:hover {
+    background-color: rgb(19, 125, 219);
+}

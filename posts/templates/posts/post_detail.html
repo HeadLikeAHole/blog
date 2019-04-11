@@ -14,5 +14,34 @@
     </div>
     <img src="{{ post.image.url }}">
     <p>{{post.text}}</p>
+    <div class="comments-info">
+      <p class="comments-left">Comments: {{ post.comment_set.all.count }}</p>
+
+      {# like button #}
+      <button
+          class="btn-like"
+          data-api-like-url="{{ post.get_api_like_url }}"
+      >
+        {% if user in post.likes.all %}
+          {{ post.likes.count }} Unlike
+        {% else %}
+          {{ post.likes.count }} Like
+        {% endif %}
+      </button>
+
+      {% if user.is_authenticated %}
+        <p class="comments-right">Logged in as <a href="{% url 'profile' post.user.pk %}">{{ post.user.username }}</a></p>
+      {% endif %}
+    </div>
+    <div class="comment">
+      <textarea placeholder="Add a comment..."></textarea>
+      <button class="btn-small btn-blue">Post</button>
+      {% if not post.comment_set.all %}
+        <p>No comments yet</p>
+      {% endif %}
+      {% for comment in post.comment_set.all %}
+        {{ comment }}
+      {% endfor %}
+    </div>
   </div>
 {% endblock %}
