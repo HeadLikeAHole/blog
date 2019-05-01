@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +9,8 @@ from rest_framework import authentication, permissions
 
 from .models import Post
 from .forms import PostModelForm
+from comments.models import Comment
+from comments.forms import CommentForm
 
 
 def home(request):
@@ -16,14 +20,51 @@ def home(request):
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
+
+    if request.method == 'POST':
+        if request.POST.get('edit'):
+            comment_id = request.POST.get('comment_id')
+            comment = Comment.objects.get(id=comment_id)
+            form = CommentForm(request.POST, instance=comment)
+            if form.is_valid:
+                form.save()
+
+        elif request.POST.get('delete'):
+            form = CommentForm()
+            comment_id = request.POST.get('comment_id')
+            comment = Comment.objects.get(id=comment_id)
+            if comment.user != request.user:
+                raise PermissionDenied
+            comment.delete()
+
+        else:
+            form = CommentForm(request.POST)
+            if form.is_valid:
+                comment = form.save(commit=False)
+                comment.user = request.user
+                comment.post = post
+                parent_id = request.POST.get('parent_id')
+                if parent_id:
+                    parent_comment = Comment.objects.get(id=parent_id)
+                    comment.parent = parent_comment
+                comment.save()
+
+    else:
+        form = CommentForm()
     # item_to_delete is a context variable that gets displayed by delete modal
     # url_name and item are context variables that get inserted into delete button url tag
     context = {
         'post': post,
+        'form': form,
         'item_to_delete': 'post',
         'url_name': 'post_delete',
         'item': post.slug
     }
+
+    if request.is_ajax():
+        html = render_to_string('posts/comments.html', context, request)
+        return JsonResponse({'html': html})
+
     return render(request, 'posts/post_detail.html', context)
 
 
@@ -44,7 +85,7 @@ def post_create(request):
 
 def post_edit(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    # allows editing only own posts
+    # allow editing only own posts
     if post.user != request.user:
         raise PermissionDenied
 
@@ -62,7 +103,7 @@ def post_edit(request, slug):
 
 def post_delete(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    # allows editing only own posts
+    # allow editing only own posts
     if post.user != request.user:
         raise PermissionDenied
 

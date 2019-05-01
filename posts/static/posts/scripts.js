@@ -24,30 +24,11 @@ window.onclick = function (event) {
     }
 };
 
-
-// like button ajax request
-
-// get the like button
-const likeButton = document.getElementsByClassName('btn-like')[0];
-
-const updateLikeButtonText = (button, newCount, verb) => {
-    button.innerText = newCount + ' ' + verb
-};
-
-likeButton.addEventListener('click', function () {
-    const likeUrl = likeButton.getAttribute('data-api-like-url');
-
-    fetch(likeUrl).then(res => res.json()).then(data => {
-        let newLikes;
-        const likesCount = parseInt(data.likes_count);
-        if (data.authenticated) {
-            if (data.add_like) {
-                newLikes = likesCount + 1;
-                updateLikeButtonText(this, newLikes, 'Unlike')
-            } else {
-                newLikes = likesCount - 1;
-                updateLikeButtonText(this, newLikes, 'Like')
-            }
-        }
-    }).catch(err => console.log(err))
+// slide up message after 5 seconds
+$(document).ready(function () {
+    $(function () {
+        setTimeout(function () {
+            $('.alert').slideUp(2000)
+        }, 5000)
+    });
 });

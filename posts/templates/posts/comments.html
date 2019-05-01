@@ -1,0 +1,117 @@
+<div class="comments-info">
+  <p class="comments-left">Comments: {{ post.comment_set.all.count }}</p>
+
+  {# like button #}
+  <button
+      class="btn-like"
+      data-api-like-url="{{ post.get_api_like_url }}"
+  >
+    {% if user in post.likes.all %}
+      {{ post.likes.count }} Unlike
+    {% else %}
+      {{ post.likes.count }} Like
+    {% endif %}
+  </button>
+
+  {% if user.is_authenticated %}
+    <p class="comments-right">Logged in as <a href="{% url 'profile' post.user.pk %}">{{ post.user.username }}</a></p>
+  {% endif %}
+</div>
+
+<div class="comments">
+  <form method="post" action="." class="comment-form">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Post" class="btn-small btn-blue">
+  </form>
+  <div class="comment-block">
+    {% if post.comment_set.all %}
+      {% for comment in post.comment_set.all %}
+        {# display only comments which are not replies #}
+        {% if not comment.parent %}
+          <div class="comment">
+
+            <div class="profile-pic-thumbnail">
+              <img src="{{ comment.user.profile.image.url }}">
+            </div>
+
+            <div class="comment-above">
+              <a href="{% url 'profile' comment.user.pk %}">{{ comment.user }}</a>
+              {{ comment.published|timesince }} ago
+            </div>
+            <p>{{ comment.text }}</p>
+            <a href="#" class="comment-edit">edit</a>
+            <a href="#" class="comment-delete">delete</a>
+            <div class="comment-delete-confirmation">
+              <span>Are you sure? </span>
+              <form method="post" action="." class="comment-delete-form">
+                {% csrf_token %}
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                <input type="hidden" name="delete" value="True">
+                <span><a href="#" class="yes">Yes</a></span>
+              </form>
+              <span> / </span><a href="#" class="no">No</a>
+            </div>
+            <button class="btn-like reply-btn">Reply</button>
+
+            <form method="post" action="." class="reply-form">
+              {% csrf_token %}
+              <input type="hidden" name="parent_id" value="{{ comment.id }}">
+              {{ form }}
+              <div class="edit-buttons">
+                <input type="submit" value="Post" class="comment-edit-save btn-small btn-blue">
+                <button type="button" class="comment-cancel btn-small btn-gray">Cancel</button>
+              </div>
+            </form>
+
+          {% for child in comment.children.all  %}
+            <div class="comment">
+              {{ child.user }}
+              {{ child.published|timesince }}
+              <p>{{ child.text }}</p>
+              <a href="#" class="comment-edit">edit</a>
+              <a href="#" class="comment-delete">delete</a>
+              <div class="comment-delete-confirmation">
+                <span>Are you sure? </span>
+                <form method="post" action="." class="comment-delete-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="comment_id" value="{{ child.id }}">
+                  <input type="hidden" name="delete" value="True">
+                  <span><a href="#" class="yes">Yes</a></span>
+                </form>
+                <span> / </span><a href="#" class="no">No</a>
+              </div>
+            </div>
+            <form method="post" action="." class="comment-edit-form">
+              {% csrf_token %}
+              <input type="hidden" name="comment_id" value="{{ child.id }}">
+              <input type="hidden" name="edit" value="True">
+              {{ form }}
+              <div class="edit-buttons">
+                <input type="submit" value="Save" class="comment-edit-save btn-small btn-blue">
+                <button type="button" class="comment-cancel btn-small btn-gray">Cancel</button>
+              </div>
+            </form>
+          {% endfor %}
+
+          </div>
+          {# show comment edit form on click #}
+          <form method="post" action="." class="comment-edit-form">
+            {% csrf_token %}
+            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+            <input type="hidden" name="edit" value="True">
+            {{ form }}
+            <div class="edit-buttons">
+              <input type="submit" value="Save" class="comment-edit-save btn-small btn-blue">
+              <button type="button" class="comment-cancel btn-small btn-gray">Cancel</button>
+            </div>
+          </form>
+
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <p class="no-comments">No comments yet</p>
+    {% endif %}
+  </div>
+
+</div>

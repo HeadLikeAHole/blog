@@ -177,6 +177,10 @@ textarea:focus {
     box-shadow: 0 0 8px rgb(26, 202, 237);
 }
 
+textarea:invalid {
+    border: 1px solid rgb(190, 190, 190);
+    box-shadow: none;
+}
 
 /* makes current errors red */
 .errorlist li {
@@ -410,28 +414,71 @@ form ul {
     color: rgb(43, 45, 50);
 }
 
-.comment {
+.comments {
     margin-top: 2rem;
 }
 
-.comment textarea {
+.comments textarea {
     height: 8rem;
     margin-bottom: 0.5rem;
 }
 
-.comment button {
+.comments input[type=submit] {
     float: right;
 }
 
-.comment p {
-    text-align: center;
-    clear: right;
+.comment-block {
     margin-top: 5rem;
-    margin-bottom: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    margin-bottom: 5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
     border-top: 1px solid rgb(210, 210, 210);
     border-bottom: 1px solid rgb(210, 210, 210);
+}
+
+.comment {
+    font-size: 1.1rem;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 2px;
+    border: 1px solid rgb(210, 210, 210);
+    border-left: 3px solid rgb(170, 170, 170);
+}
+
+.comment p {
+    margin-bottom: 1rem;
+}
+
+.no-comments {
+    text-align: center;
+}
+
+.comment-edit-form, .reply-form {
+    display: none;
+    margin-bottom: 4rem;
+}
+
+.comment-delete-confirmation {
+    display: none;
+}
+
+.comment-delete-confirmation form {
+    display: inline;
+}
+
+.comment-delete-confirmation span {
+    color: red;
+}
+
+.comment-above {
+    font-size: 1rem;
+    color: rgb(160, 160, 160);
+    margin-bottom: 0.3rem;
+}
+
+.reply-btn {
+    float: right;
 }
 
 .btn-like {
@@ -450,4 +497,16 @@ form ul {
 
 .btn-like:hover {
     background-color: rgb(19, 125, 219);
+}
+
+.reply-btn {
+    background-color: rgb(110, 110, 120);;
+}
+
+.reply-btn:hover {
+    background-color: rgb(90, 90, 100);;
+}
+
+.profile-pic-thumbnail {
+
 }
