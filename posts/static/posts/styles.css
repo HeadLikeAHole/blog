@@ -2,25 +2,41 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    /*stops long words from overflowing*/
+    /* stops long words from overflowing */
     overflow-wrap: break-word;
     font-family: 'Lora', sans-serif;
-    /*removes dotted outline around title on return to post list from detail*/
+    /* remove dotted outline around title links on return to post list from detail */
     outline: none;
     color: rgb(43, 45, 50);
 }
 
 nav {
     display: flex;
-    background-color: rgb(43, 45, 50);
-    height: 4rem;
+    justify-content: space-between;
     align-items: center;
+    min-height: 8vh;
+    background-color: rgb(43, 45, 50);
+}
+
+#logo {
+    font-size: 2rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav li {
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
 }
 
 nav a {
     color: #c8c8c8;
     text-decoration: none;
-    margin: 0.5rem;
     font-size: 1.1rem;
 }
 
@@ -35,7 +51,7 @@ nav button {
     border-radius: 2px;
     font-family: inherit;
     font-size: 1.1rem;
-    padding: 0.5rem 1.6rem;
+    padding: 0.4rem 1.6rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -44,21 +60,45 @@ nav button:hover {
     background-color: rgb(116, 67, 137);
 }
 
-#logo {
-    font-size: 2rem;
-    color: white;
-}
-
 .left-bar {
-    flex: 1;
+    display: flex;
+    align-items: center;
 }
 
 .right-bar {
-    margin-right: 1rem;
+    display: flex;
+    justify-content: end;
+    width: 70%;
+    align-items: center;
 }
 
-.right-bar a {
-    justify-content: right;
+#search-form {
+    display: inline;
+}
+
+#search-field {
+    display: inline;
+    width: auto;
+    margin: 0;
+}
+
+#search-button {
+    padding: 0.5rem;
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+}
+
+.nav-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: 0.4rem;
+}
+
+.nav-username {
+    margin-left: 0.4rem;
 }
 
 .post-list {
@@ -78,7 +118,6 @@ nav button:hover {
     width: 35%;
     margin-right: 1rem;
     min-width: 20rem;
-
 }
 
 .post-list-block {
@@ -105,6 +144,11 @@ nav button:hover {
     text-decoration: underline;
 }
 
+.no-posts {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
 .post-detail {
     width: 35%;
     margin: 0 auto;
@@ -125,7 +169,7 @@ nav button:hover {
     border-bottom: 1px solid rgb(210, 210, 210);
 }
 
-.post-detail img {
+.post-detail-img {
     width: 100%;
     min-width: 20rem;
     margin-top: 2rem;
@@ -171,8 +215,7 @@ textarea {
 
 input[type=text]:focus,
 input[type=password]:focus,
-input[type=email]:focus,
-textarea:focus {
+input[type=email]:focus {
     border: 1px solid rgb(26, 202, 237);
     box-shadow: 0 0 8px rgb(26, 202, 237);
 }
@@ -437,17 +480,35 @@ form ul {
 }
 
 .comment {
-    font-size: 1.1rem;
+    display: flex;
     padding: 0.8rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
     border-radius: 2px;
     border: 1px solid rgb(210, 210, 210);
-    border-left: 3px solid rgb(170, 170, 170);
+    border-left: 2px solid rgb(170, 170, 170);
 }
 
 .comment p {
-    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+}
+
+.comment a {
+    text-decoration: none;
+}
+
+.comment a:hover {
+    text-decoration: underline;
+}
+
+.replies {
+    margin-top: 1.5rem;
+}
+
+.comment-reply {
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
 }
 
 .no-comments {
@@ -457,6 +518,14 @@ form ul {
 .comment-edit-form, .reply-form {
     display: none;
     margin-bottom: 4rem;
+}
+
+.comment-edit-form textarea {
+    margin-top: 0;
+}
+
+.reply-form textarea {
+    margin-top: 2rem;
 }
 
 .comment-delete-confirmation {
@@ -474,7 +543,24 @@ form ul {
 .comment-above {
     font-size: 1rem;
     color: rgb(160, 160, 160);
-    margin-bottom: 0.3rem;
+    line-height: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.comment-above a {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #141414;
+    text-decoration: none;
+}
+
+.comment-below {
+
+}
+
+.comment-below a {
+    font-size: 1.1rem;
+    color: rgb(130, 130, 150);
 }
 
 .reply-btn {
@@ -507,6 +593,15 @@ form ul {
     background-color: rgb(90, 90, 100);;
 }
 
-.profile-pic-thumbnail {
+.avatar {
+    flex: 1;
+    margin-right: 0.5rem;
+}
 
+.avatar img {
+    width: 100%;
+}
+
+.comment-rest {
+    flex: 8;
 }

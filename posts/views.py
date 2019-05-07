@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.db.models import Q
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,8 +15,18 @@ from comments.forms import CommentForm
 
 
 def home(request):
-    posts = Post.objects.all().order_by('-published')
-    return render(request, 'posts/home.html', {'posts': posts})
+    posts = Post.objects.all()
+
+    query = request.GET.get('q')
+    no_results = False
+    if query:
+        posts = Post.objects.filter(
+            Q(user__username__icontains=query) | Q(title__icontains=query) | Q(text__icontains=query)
+        )
+        if not posts.exists():
+            no_results = True
+
+    return render(request, 'posts/home.html', {'posts': posts, 'no_results': no_results})
 
 
 def post_detail(request, slug):

@@ -17,4 +17,9 @@
       </div>
     </div>
   {% endfor %}
+  {% if not posts and not no_results %}
+    <h1 class="no-posts">No posts have been added yet</h1>
+  {% elif no_results %}
+    <h1 class="no-posts">No posts found using query "{{ request.GET.q }}"</h1>
+  {% endif %}
 {% endblock %}

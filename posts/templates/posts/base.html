@@ -22,19 +22,43 @@
     </div>
   </div>
 
-  <nav class="navbar">
-    <div class="left-bar">
-      <a href="{% url 'home' %}" id="logo">Blog</a>
-      <a href="{% url 'post_create' %}"><button>New Post</button></a>
-    </div>
-    <div class="right-bar">
+  <nav>
+    <ul class="left-bar">
+      <li>
+        <a href="{% url 'home' %}" id="logo">Blog</a>
+      </li>
+      <li>
+        <a href="{% url 'post_create' %}"><button>New Post</button></a>
+      </li>
+    </ul>
+    <ul class="right-bar">
+      <li>
+        <form action="{% url 'home' %}" id="search-form">
+          <input type="text" name="q" placeholder="Search" id="search-field">
+          <button id="search-button">Search</button>
+        </form>
+      </li>
       {% if user.is_authenticated %}
-        <a href="{% url 'profile' user.pk %}">{{ user.username }}</a>
-        <a href="{% url 'logout' %}">Logout</a>
+        <li class="nav-profile">
+          <a href="{% url 'profile' user.pk %}"><img src="{{ user.profile.image.url }}" class="nav-avatar"></a>
+          <a href="{% url 'profile' user.pk %}" class="nav-username">{{ user.username }}</a>
+        </li>
+        <li>
+          <a href="{% url 'logout' %}">Logout</a>
+        </li>
       {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
+        <li>
+          <a href="{% url 'login' %}">Login</a>
+        </li>
+        <li>
+          <a href="{% url 'register' %}">Register</a>
+        </li>
       {% endif %}
+    </ul>
+    <div class="burger">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
     </div>
   </nav>
 

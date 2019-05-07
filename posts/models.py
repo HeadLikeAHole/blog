@@ -13,6 +13,9 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
 
+    class Meta:
+        ordering = ['-published']
+
     def get_api_like_url(self):
         return reverse('post_like_api', kwargs={'slug': self.slug})
 

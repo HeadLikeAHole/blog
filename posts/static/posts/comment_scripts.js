@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    $('.comment-section textarea').val('');
+
     // cache selector in a variable to improve performance:
     var $commentSection = $('.comment-section');
 
@@ -51,10 +53,10 @@ $(document).ready(function () {
     $commentSection.on('click', '.comment-edit', function (event) {
         event.preventDefault();
         var $this = $(this);
-        var text = $this.prev().text();
-        $this.parent().next().show();
-        $this.parent().next().children(':nth-child(4)').attr('placeholder', 'Edit your comment...').val(text).focus();
-        $this.parent().hide();
+        var text = $this.parent().prev().text();
+        $this.parent().parent().next().show();
+        $this.parent().parent().next().children(':nth-child(4)').attr('placeholder', 'Edit your comment...').val(text).focus();
+        $this.parent().parent().hide();
     });
 
     // close comment form
@@ -123,8 +125,8 @@ $(document).ready(function () {
     // show reply form on reply button click
     $commentSection.on('click', '.reply-btn', function (event) {
         event.preventDefault();
-        $(this).next().children(':nth-child(3)').attr('placeholder', 'Add a reply...');
-        $(this).next().toggle();
+        $(this).parent().next().children(':nth-child(3)').attr('placeholder', 'Add a reply...');
+        $(this).parent().next().toggle();
     });
 
 });
