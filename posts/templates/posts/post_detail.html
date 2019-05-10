@@ -1,5 +1,5 @@
 {% extends 'posts/base.html' %}
-
+{% load martortags %}
 {% block title %}Post Detail{% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
       </div>
     </div>
     <img src="{{ post.image.url }}" class="post-detail-img">
-    <p>{{post.text}}</p>
+    <p>{{ post.text|safe_markdown|linebreaks }}</p>
 
     <div class="comment-section">
       {% include 'posts/comments.html' %}

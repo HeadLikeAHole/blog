@@ -1,5 +1,5 @@
 {% extends 'posts/base.html' %}
-
+{% load martortags %}
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
@@ -8,8 +8,8 @@
       <a href="{% url 'post_detail' post.slug %}"><img src="{{ post.image.url }}"></a>
       <div class="post-list-block">
         <div class="post-list-main">
-          <a href="{% url 'post_detail' post.slug %}"><h1>{{ post.title|truncatechars:70 }}</h1></a>
-          <p>{{ post.text|truncatechars:140 }}</p>
+          <a href="{% url 'post_detail' post.slug %}"><h1>{{ post.title|truncatechars:80 }}</h1></a>
+          <p>{{ post.text|safe_markdown|truncatechars:140 }}</p>
         </div>
         <div class="post-list-info">
           Posted by {{ post.user }} {{ post.published|timesince }} ago

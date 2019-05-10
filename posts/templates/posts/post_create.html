@@ -1,5 +1,7 @@
 {% extends 'posts/base.html' %}
-
+{% block head_extra %}
+  {{ form.media }}
+{% endblock %}
 {% block title %}Blog Post{% endblock %}
 
 {% block content %}
