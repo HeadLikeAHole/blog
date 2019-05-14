@@ -5,14 +5,16 @@
 {% block content %}
   {% for post in posts %}
     <div class="post-list">
-      <a href="{% url 'post_detail' post.slug %}"><img src="{{ post.image.url }}"></a>
-      <div class="post-list-block">
+      <div class="post-list-left">
+        <a href="{% url 'post_detail' post.slug %}"><img src="{{ post.image.url }}"></a>
+      </div>
+      <div class="post-list-right">
         <div class="post-list-main">
           <a href="{% url 'post_detail' post.slug %}"><h1>{{ post.title|truncatechars:80 }}</h1></a>
           <p>{{ post.text|safe_markdown|truncatechars:140 }}</p>
         </div>
         <div class="post-list-info">
-          Posted by {{ post.user }} {{ post.published|timesince }} ago
+          Posted by <a href="{% url 'profile' post.user.pk %}" class="user-profile-link">{{ post.user }}</a> {{ post.published|timesince }} ago
         </div>
       </div>
     </div>
@@ -21,5 +23,27 @@
     <h1 class="no-posts">No posts have been added yet</h1>
   {% elif no_results %}
     <h1 class="no-posts">No posts found using query "{{ request.GET.q }}"</h1>
+  {% endif %}
+
+  {% if paginated %}
+    <div class="pagination">
+      {% if posts.has_previous %}
+        <a href="?page=1"><button class="btn-page">First</button></a>
+        <a href="?page={{ posts.previous_page_number }}"><button class="btn-page">Previous</button></a>
+      {% endif %}
+
+      {% for num in posts.paginator.page_range %}
+        {% if posts.number == num %}
+          <a href="?page={{ num }}"><button class="btn-page btn-current">{{ num }}</button></a>
+        {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+          <a href="?page={{ num }}"><button class="btn-page">{{ num }}</button></a>
+        {% endif %}
+      {% endfor %}
+
+      {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}"><button class="btn-page">Next</button></a>
+        <a href="?page={{ posts.paginator.num_pages}}"><button class="btn-page">Last</button></a>
+      {% endif %}
+    </div>
   {% endif %}
 {% endblock %}

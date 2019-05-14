@@ -1,18 +1,26 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 
 from .forms import UserRegisterForm, UserEditForm, ProfileEditForm
 from .models import Profile
 
 
 def register(request):
+    next_page = request.GET.get('next')
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
             messages.success(request, f'Account for {username} has been created! You are now able to log in.')
-            return redirect('login')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect(next_page)
+            else:
+                return HttpResponse('User does not exist')
 
     else:
         form = UserRegisterForm()
@@ -21,8 +29,8 @@ def register(request):
 
 
 def profile(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    return render(request, 'registration/profile.html', {'profile': profile})
+    user_profile = get_object_or_404(Profile, pk=pk)
+    return render(request, 'registration/profile.html', {'profile': user_profile})
 
 
 def profile_edit(request):

@@ -3,15 +3,17 @@
 {% block content %}
   <div class="profile">
     <div>
-      <img src="{{ user.profile.image.url }}" alt="user profile picture">
-      <a href="{% url 'profile_edit' %}"><button>Edit Profile</button></a>
+      <img src="{{ profile.image.url }}" alt="user profile picture">
+      {% if profile.user == user %}
+        <a href="{% url 'profile_edit' %}"><button>Edit Profile</button></a>
+      {% endif %}
     </div>
     <div>
-      <h2>{{ user.username }}'s Profile</h2>
-      <p><strong>First name:</strong> {{ user.first_name }}</p>
-      <p><strong>Last name:</strong> {{ user.last_name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+      <h2>{{ profile.user.username }}'s Profile</h2>
+      <p><strong>First name:</strong> {{ profile.user.first_name }}</p>
+      <p><strong>Last name:</strong> {{ profile.user.last_name }}</p>
+      <p><strong>Email:</strong> {{ profile.user.email }}</p>
+      <p><strong>Bio:</strong> {{ profile.bio }}</p>
     </div>
   </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from PIL import Image
 
 
 class Post(models.Model):
@@ -21,3 +22,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    # decrease uploaded image's resolution to 600 px
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # methods from PIL library
+        img = Image.open(self.image.path)
+        if img.height > 1080 or img.width > 1080:
+            output_size = (1080, 1080)
+            img.thumbnail(output_size)
+            img.save(self.image.path)

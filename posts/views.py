@@ -3,6 +3,8 @@ from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,18 +17,31 @@ from comments.forms import CommentForm
 
 
 def home(request):
-    posts = Post.objects.all()
+    post_list = Post.objects.all()
 
     query = request.GET.get('q')
     no_results = False
     if query:
-        posts = Post.objects.filter(
+        post_list = Post.objects.filter(
             Q(user__username__icontains=query) | Q(title__icontains=query) | Q(text__icontains=query)
         )
-        if not posts.exists():
+        if not post_list.exists():
             no_results = True
 
-    return render(request, 'posts/home.html', {'posts': posts, 'no_results': no_results})
+    # paginate posts by 20 items per page
+    paginator = Paginator(post_list, 20)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+
+    context = {
+        'posts': posts, 'paginated': paginated, 'no_results': no_results
+    }
+
+    return render(request, 'posts/home.html', context)
 
 
 def post_detail(request, slug):
@@ -36,6 +51,8 @@ def post_detail(request, slug):
         if request.POST.get('edit'):
             comment_id = request.POST.get('comment_id')
             comment = Comment.objects.get(id=comment_id)
+            if comment.user != request.user:
+                raise PermissionDenied
             form = CommentForm(request.POST, instance=comment)
             if form.is_valid:
                 form.save()
@@ -79,6 +96,7 @@ def post_detail(request, slug):
     return render(request, 'posts/post_detail.html', context)
 
 
+@login_required
 def post_create(request):
     if request.method == 'POST':
         # request.FILES contains image

@@ -28,9 +28,11 @@
       <li>
         <a href="{% url 'home' %}" id="logo">Blog</a>
       </li>
-      <li>
-        <a href="{% url 'post_create' %}"><button>New Post</button></a>
-      </li>
+      {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'post_create' %}"><button>New Post</button></a>
+        </li>
+      {% endif %}
     </ul>
     <ul class="right-bar">
       <li>
@@ -45,30 +47,33 @@
           <a href="{% url 'profile' user.pk %}" class="nav-username">{{ user.username }}</a>
         </li>
         <li>
-          <a href="{% url 'logout' %}">Logout</a>
+          <a href="{% url 'logout' %}?return={{ request.path }}">Logout</a>
         </li>
       {% else %}
         <li>
-          <a href="{% url 'login' %}">Login</a>
+          <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
         </li>
         <li>
-          <a href="{% url 'register' %}">Register</a>
+          <a href="{% url 'register' %}?next={{ request.path }}">Register</a>
         </li>
       {% endif %}
     </ul>
-    <div class="burger">
-      <div class="line1"></div>
-      <div class="line2"></div>
-      <div class="line3"></div>
-    </div>
   </nav>
 
   {% block content %}{% endblock %}
+
+  {# scroll up button #}
+  {# add id="btn-up" instead of class to override font awesome's defaults #}
+  <i class="fas fa-arrow-alt-circle-up fa-3x" id="btn-top"></i>
+
+  <footer>Designed by Igor (email: igorwho@yandex.ru)</footer>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="{% static 'posts/get_csrf_token.js' %}"></script>
   {# delete modal and like button #}
   <script src="{% static 'posts/scripts.js' %}"></script>
   {# reply button and comment form submission #}
   <script src="{% static 'posts/comment_scripts.js' %}"></script>
+  <script src="{% static 'posts/scroll_top.js' %}"></script>
 </body>
 </html>

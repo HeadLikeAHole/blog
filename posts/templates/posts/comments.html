@@ -14,17 +14,21 @@
   </button>
 
   {% if user.is_authenticated %}
-    <p class="comments-right">Logged in as <a href="{% url 'profile' post.user.pk %}">{{ post.user.username }}</a></p>
+    <p class="comments-right">Logged in as <a href="{% url 'profile' user.pk %}" class="user-profile-link">{{ user.username }}</a></p>
   {% endif %}
 </div>
 
 <div class="comments">
   {# comment form #}
-  <form method="post" action="." class="comment-form">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Post" class="btn-small btn-blue">
-  </form>
+  {% if user.is_authenticated %}
+    <form method="post" action="." class="comment-form">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Post" class="btn-small btn-blue">
+    </form>
+  {% else %}
+    <a href="{% url 'login' %}?next={{ request.path }}"><p>Log in to comment</p></a>
+  {% endif %}
 
   <div class="comment-block">
     {% if post.comment_set.all %}
@@ -39,24 +43,28 @@
 
               <div class="edit-hide">
                 <div class="comment-above">
-                  <a href="{% url 'profile' comment.user.pk %}">{{ comment.user }}</a>
+                  Posted by <a href="{% url 'profile' comment.user.pk %}" class="user-profile-link">{{ comment.user }}</a>
                   {{ comment.published|timesince }} ago
                 </div>
                 <p>{{ comment.text }}</p>
                 <div class="comment-below">
-                  <a href="#" class="comment-edit">edit</a>
-                  <a href="#" class="comment-delete">delete</a>
-                  <div class="comment-delete-confirmation">
-                    <span>Are you sure? </span>
-                    <form method="post" action="." class="comment-delete-form">
-                      {% csrf_token %}
-                      <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                      <input type="hidden" name="delete" value="True">
-                      <span><a href="#" class="yes">Yes</a></span>
-                    </form>
-                    <span> / </span><a href="#" class="no">No</a>
-                  </div>
-                  <button class="btn-like reply-btn">Reply</button>
+                  {% if comment.user == user %}
+                    <a href="#" class="comment-edit">edit</a>
+                    <a href="#" class="comment-delete">delete</a>
+                    <div class="comment-delete-confirmation">
+                      <span>Are you sure? </span>
+                      <form method="post" action="." class="comment-delete-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        <input type="hidden" name="delete" value="True">
+                        <span><a href="#" class="yes">Yes</a></span>
+                      </form>
+                      <span> / </span><a href="#" class="no">No</a>
+                    </div>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                    <button class="btn-like reply-btn">Reply</button>
+                  {% endif %}
                 </div>
 
                 <form method="post" action="." class="reply-form">
@@ -91,23 +99,25 @@
                     <div class="comment-rest">
                       <div class="edit-hide">
                         <div class="comment-above">
-                          <a href="{% url 'profile' child.user.pk %}">{{ child.user }}</a>
+                          Posted by <a href="{% url 'profile' child.user.pk %}" class="user-profile-link">{{ child.user }}</a>
                           {{ child.published|timesince }} ago
                         </div>
                         <p>{{ child.text }}</p>
                         <div class="comment-below">
-                          <a href="#" class="comment-edit">edit</a>
-                          <a href="#" class="comment-delete">delete</a>
-                          <div class="comment-delete-confirmation">
-                            <span>Are you sure? </span>
-                            <form method="post" action="." class="comment-delete-form">
-                              {% csrf_token %}
-                              <input type="hidden" name="comment_id" value="{{ child.id }}">
-                              <input type="hidden" name="delete" value="True">
-                              <span><a href="#" class="yes">Yes</a></span>
-                            </form>
-                            <span> / </span><a href="#" class="no">No</a>
-                          </div>
+                          {% if child.user == user %}
+                            <a href="#" class="comment-edit">edit</a>
+                            <a href="#" class="comment-delete">delete</a>
+                            <div class="comment-delete-confirmation">
+                              <span>Are you sure? </span>
+                              <form method="post" action="." class="comment-delete-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="comment_id" value="{{ child.id }}">
+                                <input type="hidden" name="delete" value="True">
+                                <span><a href="#" class="yes">Yes</a></span>
+                              </form>
+                              <span> / </span><a href="#" class="no">No</a>
+                            </div>
+                          {% endif %}
                         </div>
                       </div>
                       {# show comment edit form on click #}

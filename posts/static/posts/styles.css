@@ -92,8 +92,8 @@ nav button:hover {
 }
 
 .nav-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
+    max-width: 2.5rem;
+    max-height: 2.5rem;
     margin-top: 0.4rem;
 }
 
@@ -102,8 +102,9 @@ nav button:hover {
 }
 
 .post-list {
+    display: flex;
     height: 20rem;
-    width: 50%;
+    width: 768px;
     margin: 0 auto;
     line-height: 1.5rem;
     border-bottom: 1px solid rgb(210, 210, 210);
@@ -112,17 +113,18 @@ nav button:hover {
     overflow: hidden;
 }
 
-.post-list img {
-    display: inline-block;
-    vertical-align: top;
-    width: 35%;
+.post-list-left {
+    flex: 3;
     margin-right: 1rem;
-    min-width: 20rem;
 }
 
-.post-list-block {
-    display: inline-block;
-    width: 60%;
+.post-list-left img {
+    vertical-align: top;
+    width: 100%;
+}
+
+.post-list-right {
+    flex: 5;
 }
 
 .post-list-info {
@@ -135,13 +137,22 @@ nav button:hover {
     line-height: 2.5rem;
 }
 
-.post-list a {
+.post-list-main a {
     color: black;
     text-decoration: none;
 }
 
-.post-list a:hover {
+.post-list-main a:hover {
     text-decoration: underline;
+}
+
+.user-profile-link {
+    color: rgb(160, 160, 160);
+    text-decoration: none;
+}
+
+.user-profile-link:hover {
+    color: rgb(43, 45, 50);
 }
 
 .no-posts {
@@ -448,17 +459,12 @@ form ul {
     float: right;
 }
 
-.comments-info a {
-    color: rgb(160, 160, 160);
-    text-decoration: none;
-}
-
-.comments-info a:hover {
-    color: rgb(43, 45, 50);
-}
-
 .comments {
     margin-top: 2rem;
+}
+
+.comments p:first-child {
+    text-align: center;
 }
 
 .comments textarea {
@@ -494,16 +500,9 @@ form ul {
     margin-bottom: 0.8rem;
 }
 
-.comment a {
-    text-decoration: none;
-}
-
-.comment a:hover {
-    text-decoration: underline;
-}
-
 .replies {
     margin-top: 1.5rem;
+    clear: right;
 }
 
 .comment-reply {
@@ -547,20 +546,15 @@ form ul {
     margin-bottom: 0.8rem;
 }
 
-.comment-above a {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #141414;
-    text-decoration: none;
-}
-
-.comment-below {
-
-}
-
 .comment-below a {
     font-size: 1.1rem;
     color: rgb(130, 130, 150);
+    text-decoration: none;
+}
+
+.comment-below a:hover {
+    color: rgb(43, 45, 50);
+    text-decoration: underline;
 }
 
 .reply-btn {
@@ -586,11 +580,50 @@ form ul {
 }
 
 .reply-btn {
-    background-color: rgb(110, 110, 120);;
+    background-color: rgb(110, 110, 120);
+    margin-bottom: 1.5rem;
 }
 
 .reply-btn:hover {
-    background-color: rgb(90, 90, 100);;
+    background-color: rgb(90, 90, 100);
+}
+
+.pagination {
+    /*border: solid black 1px;*/
+    width: 100%;
+    margin: 5rem auto;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0;
+    padding: 0;
+}
+
+.btn-page {
+    display: inline-block;
+    font-family: inherit;
+    font-size: 1.1rem;
+    color: white;
+    background-color: rgb(0, 130, 255);
+    border: 1px solid rgb(0, 130, 255);
+    border-radius: 2px;
+    padding: 6px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-page:hover {
+    background-color: rgb(0, 110, 255);
+}
+
+.btn-current {
+    color: rgb(0, 130, 255);
+    background-color: white;
+}
+
+.btn-current:hover {
+    background-color: rgb(240, 240, 240);
 }
 
 .avatar {
@@ -604,4 +637,28 @@ form ul {
 
 .comment-rest {
     flex: 8;
+}
+
+#btn-top {
+    display: none;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: rgb(154, 88, 181);
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+#btn-up:hover {
+    color: rgb(116, 67, 137);
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8rem;
+    color: white;
+    background-color: rgb(43, 45, 50);
+    font-size: 1.1rem;
 }
