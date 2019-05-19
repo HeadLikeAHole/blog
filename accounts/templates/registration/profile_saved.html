@@ -1,10 +1,11 @@
 {% extends 'posts/base.html' %}
+{% load martortags %}
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
 {% block content %}
   {% include 'registration/profile_base.html' %}
   <div class="profile-posts">
-    <p class="profile-header">{{ profile.user.username }}'s Posts:</p>
+    <p class="profile-header">Saved Posts:</p>
     {% include 'posts/post_list_base.html' %}
   </div>
 {% endblock %}

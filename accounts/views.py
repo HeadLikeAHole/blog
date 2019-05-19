@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
 
 from .forms import UserRegisterForm, UserEditForm, ProfileEditForm
 from .models import Profile
+from posts.models import Post
 
 
 def register(request):
@@ -14,7 +20,7 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            messages.success(request, f'Account for {username} has been created! You are now able to log in.')
+            messages.success(request, f'Account with username "{username}" has been created')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -30,7 +36,74 @@ def register(request):
 
 def profile(request, pk):
     user_profile = get_object_or_404(Profile, pk=pk)
-    return render(request, 'registration/profile.html', {'profile': user_profile})
+    user_posts = Post.objects.filter(user__profile=user_profile)
+
+    # paginate posts by 20 items per page
+    paginator = Paginator(user_posts, 20)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    context = {'profile': user_profile, 'items': items, 'paginated': paginated}
+
+    return render(request, 'registration/profile.html', context)
+
+
+def profile_saved(request, pk):
+    user_profile = get_object_or_404(Profile, pk=pk)
+    saved_posts = request.user.saved_posts.all()
+
+    # paginate posts by 20 items per page
+    paginator = Paginator(saved_posts, 20)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    context = {'profile': user_profile, 'items': items, 'paginated': paginated}
+
+    return render(request, 'registration/profile_saved.html', context)
+
+
+def profile_following(request, pk):
+    user_profile = get_object_or_404(Profile, pk=pk)
+    user_following = user_profile.following.all()
+
+    # paginate posts by 20 items per page
+    paginator = Paginator(user_following, 40)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    context = {'profile': user_profile, 'items': items, 'paginated': paginated}
+
+    return render(request, 'registration/profile_following.html', context)
+
+
+def profile_followers(request, pk):
+    user_profile = get_object_or_404(Profile, pk=pk)
+    user_followers = user_profile.followers.all()
+
+    # paginate posts by 20 items per page
+    paginator = Paginator(user_followers, 40)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    context = {'profile': user_profile, 'items': items, 'paginated': paginated}
+
+    return render(request, 'registration/profile_followers.html', context)
 
 
 def profile_edit(request):
@@ -60,4 +133,30 @@ def profile_edit(request):
 
 def profile_delete(request):
     request.user.delete()
+    messages.success(request, f'Account with username "{request.user.username}" has been successfully deleted')
     return redirect('home')
+
+
+class UserFollowAPI(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk):
+        profile_to_follow = get_object_or_404(Profile, pk=pk)
+        user = self.request.user
+        user_profile = self.request.user.profile
+        authenticated = False
+        following = False
+
+        if user.is_authenticated:
+            authenticated = True
+            if user_profile in profile_to_follow.followers.all():
+                profile_to_follow.followers.remove(user_profile)
+                following = False
+            else:
+                profile_to_follow.followers.add(user_profile)
+                following = True
+
+        data = {'authenticated': authenticated, 'following': following}
+
+        return Response(data)

@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,31 +18,51 @@ from comments.forms import CommentForm
 
 
 def home(request):
-    post_list = Post.objects.all()
+    posts = Post.objects.all()
 
     query = request.GET.get('q')
     no_results = False
     if query:
-        post_list = Post.objects.filter(
+        posts = Post.objects.filter(
             Q(user__username__icontains=query) | Q(title__icontains=query) | Q(text__icontains=query)
         )
-        if not post_list.exists():
+        if not posts.exists():
             no_results = True
 
     # paginate posts by 20 items per page
-    paginator = Paginator(post_list, 20)
+    paginator = Paginator(posts, 20)
     if paginator.num_pages > 1:
         paginated = True
     else:
         paginated = False
     page = request.GET.get('page')
-    posts = paginator.get_page(page)
+    items = paginator.get_page(page)
 
     context = {
-        'posts': posts, 'paginated': paginated, 'no_results': no_results
+        'items': items, 'paginated': paginated, 'no_results': no_results
     }
 
     return render(request, 'posts/home.html', context)
+
+
+def feed(request):
+    user_profile = request.user.profile
+    posts = Post.objects.filter(user__profile__followers=user_profile)
+
+    # paginate posts by 20 items per page
+    paginator = Paginator(posts, 20)
+    if paginator.num_pages > 1:
+        paginated = True
+    else:
+        paginated = False
+    page = request.GET.get('page')
+    items = paginator.get_page(page)
+
+    context = {
+        'items': items, 'paginated': paginated
+    }
+
+    return render(request, 'posts/feed.html', context)
 
 
 def post_detail(request, slug):
@@ -105,6 +126,7 @@ def post_create(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
+            messages.success(request, 'Post has been successfully created')
             return redirect('home')
     else:
         form = PostModelForm
@@ -137,24 +159,9 @@ def post_delete(request, slug):
         raise PermissionDenied
 
     post.delete()
+    messages.success(request, 'Post has been successfully deleted')
 
     return redirect('home')
-
-
-# def post_like(request, slug):
-#     post = get_object_or_404(Post, slug=slug)
-#     user = request.user
-#
-#     if user.is_authenticated:
-#         if user in post.likes.all():
-#             post.likes.remove(user)
-#         else:
-#             post.likes.add(user)
-#
-#         return redirect('post_detail', slug)
-#
-#     else:
-#         return redirect('login')
 
 
 class PostLikeAPI(APIView):
@@ -182,5 +189,29 @@ class PostLikeAPI(APIView):
             'add_like': add_like,
             'likes_count': likes_count
                 }
+
+        return Response(data)
+
+
+class PostSaveAPI(APIView):
+    authentication_classes = (authentication.SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+        user = self.request.user
+        authenticated = False
+        saved = False
+
+        if user.is_authenticated:
+            authenticated = True
+            if user in post.saved_by.all():
+                post.saved_by.remove(user)
+                saved = False
+            else:
+                post.saved_by.add(user)
+                saved = True
+
+        data = {'authenticated': authenticated, 'saved': saved}
 
         return Response(data)

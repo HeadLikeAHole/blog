@@ -1,0 +1,42 @@
+{% load martortags %}
+
+{% for item in items %}
+  <div class="post-list">
+    <div class="post-list-left">
+      <a href="{% url 'post_detail' item.slug %}"><img src="{{ item.image.url }}"></a>
+    </div>
+    <div class="post-list-right">
+      <div class="post-list-main">
+        <a href="{% url 'post_detail' item.slug %}"><h1>{{ item.title|truncatechars:80 }}</h1></a>
+        <p>{{ item.text|safe_markdown|truncatechars:140 }}</p>
+      </div>
+      <div class="post-list-info">
+        <div class="post-list-info-top" >
+          Posted by <a href="{% url 'profile' item.user.pk %}" class="gray-link">{{ item.user }}</a> {{ item.published|timesince }} ago
+        </div>
+        <div class="post-list-info-bottom comment-section" >
+          <a href="{% url 'post_detail' item.slug %}#comment-section" class="gray-link">{{ item.comment_set.all.count }} comment{{ item.comment_set.all.count|pluralize }}</a>
+          {# like button #}
+          <button
+              class="btn-like"
+              data-api-like-url="{{ item.get_api_like_url }}"
+          >
+            {% if user in post.likes.all %}
+              {{ item.likes.count }} Unlike
+            {% else %}
+              {{ item.likes.count }} Like
+            {% endif %}
+          </button>
+          {# save link #}
+          <a href="" class="save gray-link" data-api-save-url="{{ item.get_api_save_url }}">
+          {% if user in item.saved_by.all %}
+            Unsave
+          {% else %}
+            Save
+          {% endif %}
+        </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}

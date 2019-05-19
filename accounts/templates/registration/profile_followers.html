@@ -1,0 +1,18 @@
+{% extends 'posts/base.html' %}
+{% load martortags %}
+{% block title %}{{ profile.user.username }}'s Profile{% endblock %}
+
+{% block content %}
+  {% include 'registration/profile_base.html' %}
+  <p class="profile-header">{{ profile.user.username }}'s followers:</p>
+  <div class="profile-follow">
+    {% for item in items %}
+      <div class="card">
+        <a href="{% url 'profile' item.pk %}"><img src="{{ item.image.url }}" alt="user profile picture"></a>
+        <div class="card-info">
+          <a href="{% url 'profile' item.pk %}">{{ item.user.username }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

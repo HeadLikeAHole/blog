@@ -1,0 +1,31 @@
+<div class="profile">
+  <div>
+    <img src="{{ profile.image.url }}" alt="user profile picture">
+    {% if profile.user == user %}
+      <a href="{% url 'profile_edit' %}"><button class="profile-btn">Edit Profile</button></a>
+    {% endif %}
+  </div>
+  <div>
+    <div class="profile-top">
+      <h2>{{ profile.user.username }}'s Profile</h2>
+      {% if profile.user != user and user.is_authenticated %}
+        <button class="follow profile-btn-follow btn-small {% if user.profile in profile.followers.all %}btn-red{% else %}btn-blue{% endif %}" data-api-follow-pk="{{ profile.get_api_follow_pk }}">
+          {% if user.profile in profile.followers.all %}Unfollow{% else %}Follow{% endif %}
+        </button>
+      {% endif %}
+    </div>
+    <p><strong>First name:</strong> {{ profile.user.first_name }}</p>
+    <p><strong>Last name:</strong> {{ profile.user.last_name }}</p>
+    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio }}</p>
+  </div>
+</div>
+
+<div class="profile-bar">
+    <div><a href="{% url 'profile' profile.pk %}">{{ profile.user.username }}'s posts ({{ profile.user.post_set.count }})</a></div>
+    {% if profile.user == user %}
+      <div><a href="{% url 'profile_saved' profile.pk %}">Saved posts ({{ profile.user.saved_posts.count }})</a></div>
+    {% endif %}
+    <div><a href="{% url 'profile_following' profile.pk %}">Following ({{ profile.following.count }})</a></div>
+    <div><a href="{% url 'profile_followers' profile.pk %}">Followers ({{ profile.followers.count }})</a></div>
+</div>

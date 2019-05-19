@@ -13,8 +13,16 @@
     {% endif %}
   </button>
 
+  <a href="" class="save gray-link" data-api-save-url="{{ post.get_api_save_url }}">
+    {% if user in post.saved_by.all %}
+      Unsave
+    {% else %}
+      Save
+    {% endif %}
+  </a>
+
   {% if user.is_authenticated %}
-    <p class="comments-right">Logged in as <a href="{% url 'profile' user.pk %}" class="user-profile-link">{{ user.username }}</a></p>
+    <p class="comments-right">Logged in as <a href="{% url 'profile' user.pk %}" class="gray-link">{{ user.username }}</a></p>
   {% endif %}
 </div>
 
@@ -43,7 +51,7 @@
 
               <div class="edit-hide">
                 <div class="comment-above">
-                  Posted by <a href="{% url 'profile' comment.user.pk %}" class="user-profile-link">{{ comment.user }}</a>
+                  Posted by <a href="{% url 'profile' comment.user.pk %}" class="gray-link">{{ comment.user }}</a>
                   {{ comment.published|timesince }} ago
                 </div>
                 <p>{{ comment.text }}</p>
@@ -99,7 +107,7 @@
                     <div class="comment-rest">
                       <div class="edit-hide">
                         <div class="comment-above">
-                          Posted by <a href="{% url 'profile' child.user.pk %}" class="user-profile-link">{{ child.user }}</a>
+                          Posted by <a href="{% url 'profile' child.user.pk %}" class="gray-link">{{ child.user }}</a>
                           {{ child.published|timesince }} ago
                         </div>
                         <p>{{ child.text }}</p>

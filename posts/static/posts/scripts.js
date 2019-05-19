@@ -26,6 +26,14 @@ window.onclick = function (event) {
     }
 };
 
+// slide up message after 5 seconds
+$(document).ready(function () {
+    setTimeout(function () {
+        // takes 2s to slide up
+        $('.message').slideUp(2000)
+    }, 5000)
+});
+
 // // get scroll top button
 // const btnTop = document.getElementById('btn-top');
 //
@@ -43,15 +51,3 @@ window.onclick = function (event) {
 //     document.documentElement.scrollTop = 0;
 // });
 //
-
-
-
-
-// slide up message after 5 seconds
-$(document).ready(function () {
-    $(function () {
-        setTimeout(function () {
-            $('.alert').slideUp(2000)
-        }, 5000)
-    });
-});

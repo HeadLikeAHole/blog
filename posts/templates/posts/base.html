@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static 'posts/styles.css' %}">
   <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -10,64 +11,97 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-
-  <div id="modal">
-    <div class="modal-body">
-      <div class="modal-content">
-        <p>Are you sure you want to delete this {{ item_to_delete }}?</p>
-{# if view's render function sends url_name context variable it inserts url pattern name for appropriate delete view #}
-        <a href="{% if url_name and item %}{% url url_name item %}{% elif url_name %}{% url url_name %}{% endif %}">
-          <button class="btn-small btn-red">Yes, Delete</button></a>
-        <button class="btn-small btn-gray close-modal">Cancel</button>
+  <div class="container">
+    <div class="main">
+      <div id="modal">
+        <div class="modal-body">
+          <div class="modal-content">
+            <p>Are you sure you want to delete this {{ item_to_delete }}?</p>
+    {# if view's render function sends url_name context variable it inserts url pattern name for appropriate delete view #}
+            <a href="{% if url_name and item %}{% url url_name item %}{% elif url_name %}{% url url_name %}{% endif %}">
+              <button class="btn-small btn-red">Yes, Delete</button></a>
+            <button class="btn-small btn-gray close-modal">Cancel</button>
+          </div>
+        </div>
       </div>
+
+      <nav>
+        <ul class="left-bar">
+          <li>
+            <a href="{% url 'home' %}" id="logo">Blog</a>
+          </li>
+          {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'feed' %}" id="feed">Feed</a>
+            </li>
+            <li>
+              <a href="{% url 'post_create' %}"><button>New Post</button></a>
+            </li>
+          {% endif %}
+        </ul>
+        <ul class="right-bar">
+          <li>
+            <form action="{% url 'home' %}" id="search-form">
+              <input type="text" name="q" placeholder="Search" id="search-field">
+              <button id="search-button">Search</button>
+            </form>
+          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-profile">
+              <a href="{% url 'profile' user.pk %}"><img src="{{ user.profile.image.url }}" class="nav-avatar"></a>
+              <a href="{% url 'profile' user.pk %}" class="nav-username">{{ user.username }}</a>
+            </li>
+            <li>
+              <a href="{% url 'logout' %}?return={% if request.path == '/accounts/login/' or request.path == '/accounts/logout/' %}/{% else %}{{ request.path }}{% endif %}">Logout</a>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url 'login' %}?next={% if request.path == '/accounts/login/' or request.path == '/accounts/logout/' %}/{% else %}{{ request.path }}{% endif %}">Login</a>
+            </li>
+            <li>
+              <a href="{% url 'register' %}?next={% if request.path == '/accounts/login/' or request.path == '/accounts/logout/' %}/{% else %}{{ request.path }}{% endif %}">Register</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p class="message">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}{% endblock %}
+
+      {% if paginated %}
+        <div class="pagination">
+          {% if items.has_previous %}
+            <a href="?page=1"><button class="btn-page">First</button></a>
+            <a href="?page={{ items.previous_page_number }}"><button class="btn-page">Previous</button></a>
+          {% endif %}
+
+          {% for num in items.paginator.page_range %}
+            {% if items.number == num %}
+              <a href="?page={{ num }}"><button class="btn-page btn-current">{{ num }}</button></a>
+            {% elif num > items.number|add:'-3' and num < items.number|add:'3' %}
+              <a href="?page={{ num }}"><button class="btn-page">{{ num }}</button></a>
+            {% endif %}
+          {% endfor %}
+
+          {% if items.has_next %}
+            <a href="?page={{ items.next_page_number }}"><button class="btn-page">Next</button></a>
+            <a href="?page={{ items.paginator.num_pages}}"><button class="btn-page">Last</button></a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {# scroll up button #}
+      {# add id="btn-up" instead of class to override font awesome's defaults #}
+      <i class="fas fa-arrow-alt-circle-up fa-3x" id="btn-top"></i>
     </div>
+
+    <footer>Designed by Igor (email: igorwho@yandex.ru)</footer>
   </div>
-
-  <nav>
-    <ul class="left-bar">
-      <li>
-        <a href="{% url 'home' %}" id="logo">Blog</a>
-      </li>
-      {% if user.is_authenticated %}
-        <li>
-          <a href="{% url 'post_create' %}"><button>New Post</button></a>
-        </li>
-      {% endif %}
-    </ul>
-    <ul class="right-bar">
-      <li>
-        <form action="{% url 'home' %}" id="search-form">
-          <input type="text" name="q" placeholder="Search" id="search-field">
-          <button id="search-button">Search</button>
-        </form>
-      </li>
-      {% if user.is_authenticated %}
-        <li class="nav-profile">
-          <a href="{% url 'profile' user.pk %}"><img src="{{ user.profile.image.url }}" class="nav-avatar"></a>
-          <a href="{% url 'profile' user.pk %}" class="nav-username">{{ user.username }}</a>
-        </li>
-        <li>
-          <a href="{% url 'logout' %}?return={{ request.path }}">Logout</a>
-        </li>
-      {% else %}
-        <li>
-          <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-        </li>
-        <li>
-          <a href="{% url 'register' %}?next={{ request.path }}">Register</a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
-
-  {% block content %}{% endblock %}
-
-  {# scroll up button #}
-  {# add id="btn-up" instead of class to override font awesome's defaults #}
-  <i class="fas fa-arrow-alt-circle-up fa-3x" id="btn-top"></i>
-
-  <footer>Designed by Igor (email: igorwho@yandex.ru)</footer>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="{% static 'posts/get_csrf_token.js' %}"></script>
   {# delete modal and like button #}

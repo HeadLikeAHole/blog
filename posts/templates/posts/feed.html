@@ -1,0 +1,12 @@
+{% extends 'posts/base.html' %}
+{% block title %}Feed{% endblock %}
+
+{% block content %}
+
+  {% include 'posts/post_list_base.html' %}
+
+  {% if not items %}
+    <h1 class="no-posts">Follow someone to see their posts here</h1>
+  {% endif %}
+
+{% endblock %}

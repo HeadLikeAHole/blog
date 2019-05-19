@@ -6,18 +6,31 @@
   <div class="post-detail">
     <h1>{{ post.title }}</h1>
     <div class="post-detail-info">
-      Posted by <a href="{% url 'profile' post.user.pk %}" class="user-profile-link">{{ post.user }}</a> {{ post.published|timesince }} ago
-      {% if post.user == user %}
-        <div class="edit-buttons">
-          <a href="{% url 'post_edit' post.slug %}"><button class="btn-small btn-blue">Edit</button></a>
-          <button class="btn-small btn-red open-modal">Delete</button>
-        </div>
-      {% endif %}
+      <ul class="post-detail-info-left">
+        <li>Posted by</li>
+        <li><a href="{% url 'profile' post.user.pk %}"><img src="{{ post.user.profile.image.url }}" class="nav-avatar"></a></li>
+        <li><a href="{% url 'profile' post.user.pk %}" class="gray-link">{{ post.user }}</a></li>
+        <li>{{ post.published|timesince }} ago</li>
+      </ul>
+      <div class="post-detail-info-right">
+        {% if post.user == user %}
+          <div class="edit-buttons">
+            <a href="{% url 'post_edit' post.slug %}"><button class="btn-small btn-blue">Edit</button></a>
+            <button class="btn-small btn-red open-modal">Delete</button>
+          </div>
+        {% else %}
+          {% if user.is_authenticated %}
+            <button class="follow btn-small {% if user.profile in post.user.profile.followers.all %}btn-red{% else %}btn-blue{% endif %}" data-api-follow-pk="{{ post.user.profile.get_api_follow_pk }}">
+              {% if user.profile in post.user.profile.followers.all %}Unfollow{% else %}Follow{% endif %}
+            </button>
+          {% endif %}
+        {% endif %}
+      </div>
     </div>
     <img src="{{ post.image.url }}" class="post-detail-img">
     <p>{{ post.text|safe_markdown|linebreaks }}</p>
 
-    <div class="comment-section">
+    <div class="comment-section" id="comment-section">
       {% include 'posts/comments.html' %}
     </div>
 

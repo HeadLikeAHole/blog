@@ -10,6 +10,7 @@ class Post(models.Model):
     text = models.TextField()
     image = models.ImageField(default='post_default.jpg', upload_to='post_images')
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    saved_by = models.ManyToManyField(User, related_name='saved_posts')
     published = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True)
@@ -19,6 +20,9 @@ class Post(models.Model):
 
     def get_api_like_url(self):
         return reverse('post_like_api', kwargs={'slug': self.slug})
+
+    def get_api_save_url(self):
+        return reverse('post_save_api', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title

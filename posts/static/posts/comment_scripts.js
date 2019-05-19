@@ -30,6 +30,51 @@ $(document).ready(function () {
         })
     });
 
+    // save link
+    $commentSection.on('click', '.save', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        $.ajax({
+            url: $this.attr('data-api-save-url'),
+            dataType: 'json',
+            success: function (data) {
+                if (data.authenticated) {
+                    if (data.saved) {
+                        $this.text('Unsave')
+                    } else {
+                        $this.text('Save')
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response.responseText)
+            }
+        })
+    });
+
+    // follow button
+    $('.follow').on('click', function () {
+        var $this = $(this);
+        $.ajax({
+            url: $this.attr('data-api-follow-pk'),
+            dataType: 'json',
+            success: function (data) {
+                if (data.authenticated) {
+                    if (data.following) {
+                        $this.addClass('btn-red').removeClass('btn-blue');
+                        $this.text('Unfollow')
+                    } else {
+                        $this.addClass('btn-blue').removeClass('btn-red');
+                        $this.text('Follow')
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response.responseText)
+            }
+        })
+    });
+
     // add comment or reply
     $commentSection.on('submit', '.comment-form, .reply-form', function (event) {
         event.preventDefault();
