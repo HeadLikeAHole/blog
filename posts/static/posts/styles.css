@@ -38,6 +38,109 @@ nav {
     align-items: center;
     min-height: 8vh;
     background-color: rgb(43, 45, 50);
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.left-bar {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.right-bar {
+    display: flex;
+    justify-content: end;
+    width: 80%;
+    align-items: center;
+}
+
+.burger {
+    display: none;
+}
+
+.burger div {
+    width: 2rem;
+    height: 3px;
+    margin: 5px;
+    background-color: #c8c8c8;
+    transition: all 0.3s;
+}
+
+@media screen and (max-width: 930px) {
+    body {
+		/* don't show moved to the right panel, make it hidden */
+		overflow-x: hidden;
+	}
+
+    .left-bar {
+        width: 80%;
+    }
+
+    .right-bar {
+        flex-direction: column;
+        justify-content: space-around;
+        position: absolute;
+        width: 50%;
+        height: 92vh;
+        top: 8vh;
+        right: 0;
+        background-color: rgb(43, 45, 50);
+        /* move panel 100% its width to the right */
+		transform: translateX(100%);
+    }
+
+    /* items are not shown initially */
+    .right-bar li {
+        opacity: 0
+    }
+
+    .burger {
+		display: block;
+		cursor: pointer;
+	}
+}
+
+/* move links when navbar appears */
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+
+.nav-active {
+    /* move panel to its original position */
+    transform: translateX(0%);
+}
+
+/* turn burger into X */
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.toggle .line2 {
+    opacity: 0;
+}
+
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+@media screen and (max-width: 710px) {
+    .right-bar {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 510px) {
+    .right-bar {
+        width: 100%;
+    }
 }
 
 #logo {
@@ -85,18 +188,6 @@ nav button {
 
 nav button:hover {
     background-color: rgb(116, 67, 137);
-}
-
-.left-bar {
-    display: flex;
-    align-items: center;
-}
-
-.right-bar {
-    display: flex;
-    justify-content: end;
-    width: 70%;
-    align-items: center;
 }
 
 #search-form {

@@ -34,12 +34,12 @@
             <li>
               <a href="{% url 'feed' %}" id="feed">Feed</a>
             </li>
-            <li>
-              <a href="{% url 'post_create' %}"><button>New Post</button></a>
-            </li>
           {% endif %}
         </ul>
         <ul class="right-bar">
+          <li>
+            <a href="{% url 'post_create' %}"><button>New Post</button></a>
+          </li>
           <li>
             <form action="{% url 'home' %}" id="search-form">
               <input type="text" name="q" placeholder="Search" id="search-field">
@@ -63,6 +63,11 @@
             </li>
           {% endif %}
         </ul>
+        <div class="burger">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
       </nav>
 
       {% if messages %}

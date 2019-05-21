@@ -34,20 +34,27 @@ $(document).ready(function () {
     }, 5000)
 });
 
-// // get scroll top button
-// const btnTop = document.getElementById('btn-top');
-//
-// // show scroll top button on scrolling down a bit
-// window.onscroll = function () {
-//     if (document.documentElement.scrollTop > 1500) {
-//         btnTop.style.display = 'block';
-//     } else {
-//         btnTop.style.display = 'none';
-//     }
-// };
-//
-// // scroll top button
-// btnTop.addEventListener('click', function () {
-//     document.documentElement.scrollTop = 0;
-// });
-//
+// nav bar slide
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.right-bar');
+const navLinks = document.querySelectorAll('.right-bar li');
+
+burger.addEventListener('click', function () {
+    // toggle navbar back to the screen and off the screen
+    nav.classList.toggle('nav-active');
+    // slide navbar slowly
+    nav.style.transition = 'transform 0.5s ease-in';
+    // move links one by one
+    navLinks.forEach(function (link, index) {
+        if (link.style.animation) {
+            // restart animation
+            link.style.animation = '';
+        } else {
+            // ${index / 7 + 0.3}s sets delay for each link
+            link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+        }
+    });
+    // toggle between burger and X
+    burger.classList.toggle('toggle');
+});
+
