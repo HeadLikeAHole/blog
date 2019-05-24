@@ -2,12 +2,13 @@
 
 {% block content %}
   <form method="post" class="form">{% csrf_token %}
+    {# hidden input field sends link containing in "next" parameter to redirect to after login which is previous page #}
     <input type="hidden" name="next" value="{{ request.GET.next }}">
     <h2>Log in</h2>
+    {# login form fields #}
     {{ form.as_p }}
     <input type="submit" value="Login" class="btn btn-blue">
     <a href="{% url 'password_reset' %}">Forgot password?</a>
     <p class="form-footer">Need an account? <a href="{% url 'register' %}">Sign Up Now</a></p>
-    {# sends "next" parameter to redirect to the page specified in value #}
   </form>
 {% endblock %}

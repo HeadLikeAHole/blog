@@ -2,6 +2,7 @@
 {% load martortags %}
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
+{# saved post are displayed by default in user profile #}
 {% block content %}
   {% include 'registration/profile_base.html' %}
   <div class="profile-posts">

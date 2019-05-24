@@ -5,8 +5,9 @@ from django.contrib.auth.models import User
 from .models import Profile
 
 
-# creates a profile when user registers
+# create a profile when user registers
 # should be registered in apps.py
+# code is explained in django docs - signals
 @receiver(post_save, sender=User)
 def create_profile(sender, **kwargs):
     if kwargs['created']:

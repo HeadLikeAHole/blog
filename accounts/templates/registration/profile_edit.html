@@ -6,6 +6,7 @@
     <h2>Edit {{ user.username }}'s Profile</h2>
     <div class="profile-change-del">
       <a href="{% url 'password_change' %}"><button type="button" class="btn-small btn-blue">Change password</button></a>
+      {# element with open modal class is grabbed by js to open delete confirmation message #}
       <button type="button" class="btn-small btn-red open-modal">Delete account</button>
     </div>
     {{ user_form.as_p }}

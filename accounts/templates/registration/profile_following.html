@@ -6,11 +6,13 @@
   {% include 'registration/profile_base.html' %}
   <p class="profile-header">{{ profile.user.username }} is following:</p>
   <div class="profile-follow">
+    {# items are profiles of followed users #}
     {% for item in items %}
       <div class="card">
         <a href="{% url 'profile' item.pk %}"><img src="{{ item.image.url }}" alt="user profile picture"></a>
         <div class="card-info">
           <a href="{% url 'profile' item.pk %}">{{ item.user.username }}</a>
+          {# display unfollow button if you are owner of the profile #}
           {% if profile.user == user %}
             <button class="follow card-btn-follow btn-small {% if user.profile in item.followers.all %}btn-red{% else %}btn-blue{% endif %}" data-api-follow-pk="{{ item.get_api_follow_pk }}">
               {% if user.profile in item.followers.all %}Unfollow{% else %}Follow{% endif %}

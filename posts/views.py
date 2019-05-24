@@ -22,7 +22,9 @@ def home(request):
 
     query = request.GET.get('q')
     no_results = False
+    # check if there was search submitted
     if query:
+        # if search was submitted filter posts by query
         posts = Post.objects.filter(
             Q(user__username__icontains=query) | Q(title__icontains=query) | Q(text__icontains=query)
         )
@@ -45,6 +47,7 @@ def home(request):
     return render(request, 'posts/home.html', context)
 
 
+# followed users' posts
 def feed(request):
     user_profile = request.user.profile
     posts = Post.objects.filter(user__profile__followers=user_profile)
@@ -69,24 +72,30 @@ def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
 
     if request.method == 'POST':
+        # check for edit parameter in url
+        # edit comment
         if request.POST.get('edit'):
             comment_id = request.POST.get('comment_id')
             comment = Comment.objects.get(id=comment_id)
+            # only post owner can edit the post
             if comment.user != request.user:
                 raise PermissionDenied
             form = CommentForm(request.POST, instance=comment)
             if form.is_valid:
                 form.save()
-
+        # check for delete parameter in url
+        # delete comment
         elif request.POST.get('delete'):
             form = CommentForm()
             comment_id = request.POST.get('comment_id')
             comment = Comment.objects.get(id=comment_id)
+            # only post owner can delete the post
             if comment.user != request.user:
                 raise PermissionDenied
             comment.delete()
 
         else:
+            # submit a comment
             form = CommentForm(request.POST)
             if form.is_valid:
                 comment = form.save(commit=False)
@@ -110,6 +119,7 @@ def post_detail(request, slug):
         'item': post.slug
     }
 
+    # if javascript makes a request send back json response
     if request.is_ajax():
         html = render_to_string('posts/comments.html', context, request)
         return JsonResponse({'html': html})
@@ -154,7 +164,7 @@ def post_edit(request, slug):
 
 def post_delete(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    # allow editing only own posts
+    # allow deleting only own posts
     if post.user != request.user:
         raise PermissionDenied
 

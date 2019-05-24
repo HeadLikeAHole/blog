@@ -3,6 +3,9 @@
 {% block content %}
   <div class="form">
     <h2>You Have Been Logged Out</h2>
+    {# login link #}
+{#    return parameter is used instead of next parameter in order to prevent redirecting to previous page on logging out #}
+{#    server should redirect to logout page instead#}
     <a href="{% url 'login' %}?next={{ request.GET.return }}">Click here to login again</a>
   </div>
 {% endblock %}

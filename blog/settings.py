@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    # markdown
     'martor',
+    # rich text editor
     'pagedown'
 ]
 

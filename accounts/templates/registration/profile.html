@@ -1,6 +1,7 @@
 {% extends 'posts/base.html' %}
 {% block title %}{{ profile.user.username }}'s Profile{% endblock %}
 
+{# profile page consists of two snippets one is general profile information and second is their posts #}
 {% block content %}
   {% include 'registration/profile_base.html' %}
   <div class="profile-posts">

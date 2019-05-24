@@ -6,10 +6,11 @@ from .models import Profile
 
 
 class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField()  # makes email a required field
+    email = forms.EmailField()  # make email a required field
 
     class Meta:
         model = User
+        # combine fields of User and UserCreationForm
         fields = ['username', 'email', 'password1', 'password2']
 
 

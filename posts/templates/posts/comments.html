@@ -1,7 +1,9 @@
 <div class="comments-info">
+  {# ttotal amount of comments #}
   <p class="comments-left">Comments: {{ post.comment_set.all.count }}</p>
 
   {# like button #}
+  {# data-api-like-url contains value returned by api_like_url method defined in Post model which is grabbed by js script #}
   <button
       class="btn-like"
       data-api-like-url="{{ post.get_api_like_url }}"
@@ -13,6 +15,8 @@
     {% endif %}
   </button>
 
+  {# save and unsave links #}
+  {# data-api-save-url contains value returned by api_save_url method defined in Post model which is grabbed by js script #}
   <a href="" class="save gray-link" data-api-save-url="{{ post.get_api_save_url }}">
     {% if user in post.saved_by.all %}
       Unsave
@@ -48,7 +52,7 @@
               <img src="{{ comment.user.profile.image.url }}" class="profile-pic-thumbnail">
             </div>
             <div class="comment-rest">
-
+              {# hide this div when editing comment #}
               <div class="edit-hide">
                 <div class="comment-above">
                   Posted by <a href="{% url 'profile' comment.user.pk %}" class="gray-link">{{ comment.user }}</a>
@@ -63,7 +67,9 @@
                       <span>Are you sure? </span>
                       <form method="post" action="." class="comment-delete-form">
                         {% csrf_token %}
+                        {# send id of comment to delete to post_detail view #}
                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        {# send type of action to post_detail view, value doesn't matter until it's true #}
                         <input type="hidden" name="delete" value="True">
                         <span><a href="#" class="yes">Yes</a></span>
                       </form>
@@ -75,6 +81,7 @@
                   {% endif %}
                 </div>
 
+                {# reply form #}
                 <form method="post" action="." class="reply-form">
                   {% csrf_token %}
                   <input type="hidden" name="parent_id" value="{{ comment.id }}">
@@ -89,7 +96,9 @@
               {# show comment edit form on click #}
               <form method="post" action="." class="comment-edit-form">
                 {% csrf_token %}
+                {# send id of comment to edit to post_detail view #}
                 <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                {# send type of action to post_detail view, value doesn't matter until it's true #}
                 <input type="hidden" name="edit" value="True">
                 {{ form }}
                 <div class="edit-buttons">
@@ -97,7 +106,7 @@
                   <button type="button" class="comment-cancel btn-small btn-gray">Cancel</button>
                 </div>
               </form>
-
+              {# replies to comments #}
               <div class="replies">
                 {% for child in comment.children.all %}
                   <div class="comment comment-reply">
@@ -119,7 +128,9 @@
                               <span>Are you sure? </span>
                               <form method="post" action="." class="comment-delete-form">
                                 {% csrf_token %}
+                                {# send id of reply to delete to post_detail view #}
                                 <input type="hidden" name="comment_id" value="{{ child.id }}">
+                                {# send type of action to post_detail view, value doesn't matter until it's true #}
                                 <input type="hidden" name="delete" value="True">
                                 <span><a href="#" class="yes">Yes</a></span>
                               </form>
@@ -131,7 +142,9 @@
                       {# show comment edit form on click #}
                       <form method="post" action="." class="comment-edit-form">
                         {% csrf_token %}
+                        {# send id of reply to edit to post_detail view #}
                         <input type="hidden" name="comment_id" value="{{ child.id }}">
+                        {# send type of action to post_detail view, value doesn't matter until it's true #}
                         <input type="hidden" name="edit" value="True">
                         {{ form }}
                         <div class="edit-buttons">

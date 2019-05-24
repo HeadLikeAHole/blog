@@ -18,16 +18,18 @@ class Post(models.Model):
     class Meta:
         ordering = ['-published']
 
+    # method for js script
     def get_api_like_url(self):
         return reverse('post_like_api', kwargs={'slug': self.slug})
 
+    # method for js script
     def get_api_save_url(self):
         return reverse('post_save_api', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title
 
-    # decrease uploaded image's resolution to 600 px
+    # crop uploaded image's resolution to 1080px
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         # methods from PIL library

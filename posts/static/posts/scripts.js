@@ -1,3 +1,4 @@
+// check if template contains open-modal class so if it doesn't error isn't raised
 if (document.getElementsByClassName('open-modal')[0]) {
     // get the modal
     const modal = document.getElementById('modal');
@@ -5,7 +6,7 @@ if (document.getElementsByClassName('open-modal')[0]) {
     // get the button that opens the modal
     const openModal = document.getElementsByClassName('open-modal')[0];
 
-    // get the element that closes the modal
+    // get the button that closes the modal
     const closeModal = document.getElementsByClassName('close-modal')[0];
 
     // when the user clicks the open button, open the modal
@@ -13,7 +14,7 @@ if (document.getElementsByClassName('open-modal')[0]) {
         modal.style.display = 'block';
     };
 
-    // when the user clicks the close button, open the modal
+    // when the user clicks the close button, close the modal
     closeModal.onclick = function () {
         modal.style.display = 'none';
     };
@@ -26,6 +27,7 @@ window.onclick = function (event) {
     }
 };
 
+
 // slide up message after 5 seconds
 $(document).ready(function () {
     setTimeout(function () {
@@ -34,9 +36,13 @@ $(document).ready(function () {
     }, 5000)
 });
 
+
 // nav bar slide
+// get burger div
 const burger = document.querySelector('.burger');
+// get navbar links to the right (right part of the bar)
 const nav = document.querySelector('.right-bar');
+// get right-bar's links an array to iterate over
 const navLinks = document.querySelectorAll('.right-bar li');
 
 burger.addEventListener('click', function () {

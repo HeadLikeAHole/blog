@@ -2,9 +2,10 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-
+  {# all blog posts #}
   {% include 'posts/post_list_base.html' %}
 
+  {# check if no posts in post list or no post found using search #}
   {% if not items and not no_results %}
     <h1 class="no-posts">No posts have been added yet</h1>
   {% elif no_results %}

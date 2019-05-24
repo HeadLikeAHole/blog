@@ -6,7 +6,8 @@ from django.utils.text import slugify
 from .models import Post
 
 
-# signal is registered in app.py (ready method)
+# create slug function
+# if slug exists add a number to it
 def create_slug(instance):
     slug = original = slugify(instance.title)
     for num in itertools.count(1):
@@ -16,6 +17,7 @@ def create_slug(instance):
     return slug
 
 
+# signal is registered in app.py (ready method)
 def pre_save_post_receiver(sender, instance, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)

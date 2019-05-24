@@ -1,5 +1,6 @@
 <div class="profile">
   <div>
+    {# profile image and edit button #}
     <img src="{{ profile.image.url }}" alt="user profile picture">
     {% if profile.user == user %}
       <a href="{% url 'profile_edit' %}"><button class="profile-btn">Edit Profile</button></a>
@@ -21,6 +22,7 @@
   </div>
 </div>
 
+{# links to user's posts, following and followers, saved post is only displayed to the owner of the profile #}
 <div class="profile-bar">
     <div><a href="{% url 'profile' profile.pk %}">{{ profile.user.username }}'s posts ({{ profile.user.post_set.count }})</a></div>
     {% if profile.user == user %}

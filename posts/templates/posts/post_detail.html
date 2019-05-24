@@ -1,4 +1,5 @@
 {% extends 'posts/base.html' %}
+{# markdown tags #}
 {% load martortags %}
 {% block title %}Post Detail{% endblock %}
 
@@ -16,10 +17,13 @@
         {% if post.user == user %}
           <div class="edit-buttons">
             <a href="{% url 'post_edit' post.slug %}"><button class="btn-small btn-blue">Edit</button></a>
+            {# element with open modal class is grabbed by js to open delete confirmation message #}
             <button class="btn-small btn-red open-modal">Delete</button>
           </div>
         {% else %}
           {% if user.is_authenticated %}
+            {# follow / unfollow buttons #}
+            {# data-api-follow-pk contains value returned by api_follow_pk method defined in Profile model which is grabbed by js script #}
             <button class="follow btn-small {% if user.profile in post.user.profile.followers.all %}btn-red{% else %}btn-blue{% endif %}" data-api-follow-pk="{{ post.user.profile.get_api_follow_pk }}">
               {% if user.profile in post.user.profile.followers.all %}Unfollow{% else %}Follow{% endif %}
             </button>
@@ -28,6 +32,7 @@
       </div>
     </div>
     <img src="{{ post.image.url }}" class="post-detail-img">
+    {# markdown and linebreaks added through tags #}
     <p>{{ post.text|safe_markdown|linebreaks }}</p>
 
     <div class="comment-section" id="comment-section">

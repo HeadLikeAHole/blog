@@ -1,3 +1,5 @@
+# script to create fake posts
+
 import os
 import random
 

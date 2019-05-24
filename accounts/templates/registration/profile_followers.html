@@ -6,6 +6,7 @@
   {% include 'registration/profile_base.html' %}
   <p class="profile-header">{{ profile.user.username }}'s followers:</p>
   <div class="profile-follow">
+    {# items are profiles of users who follow current profile #}
     {% for item in items %}
       <div class="card">
         <a href="{% url 'profile' item.pk %}"><img src="{{ item.image.url }}" alt="user profile picture"></a>

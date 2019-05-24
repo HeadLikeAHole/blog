@@ -4,7 +4,7 @@ from accounts import views
 
 
 urlpatterns = [
-    path('', include('django.contrib.auth.urls')),
+    path('', include('django.contrib.auth.urls')),  # default django auth urls
     path('register/', views.register, name='register'),
     path('profile/<int:pk>/', views.profile, name='profile'),
     path('profile/<int:pk>/saved/', views.profile_saved, name='profile_saved'),

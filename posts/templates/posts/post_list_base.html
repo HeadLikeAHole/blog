@@ -1,3 +1,4 @@
+{# markdown tags #}
 {% load martortags %}
 
 {% for item in items %}
@@ -17,6 +18,7 @@
         <div class="post-list-info-bottom comment-section" >
           <a href="{% url 'post_detail' item.slug %}#comment-section" class="gray-link">{{ item.comment_set.all.count }} comment{{ item.comment_set.all.count|pluralize }}</a>
           {# like button #}
+          {# data-api-like-url contains value returned by api_like_url method defined in Post model which is grabbed by js script #}
           <button
               class="btn-like"
               data-api-like-url="{{ item.get_api_like_url }}"
@@ -28,6 +30,7 @@
             {% endif %}
           </button>
           {# save link #}
+          {# data-api-save-url contains value returned by api_save_url method defined in Post model which is grabbed by js script #}
           <a href="" class="save gray-link" data-api-save-url="{{ item.get_api_save_url }}">
           {% if user in item.saved_by.all %}
             Unsave

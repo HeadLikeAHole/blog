@@ -13,11 +13,12 @@ from posts.models import Post
 
 
 def register(request):
-    next_page = request.GET.get('next')
+    next_page = request.GET.get('next')  # page to redirect to after registering (previous page)
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
+            # save username and password to authenticate and login user automatically after registration
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             messages.success(request, f'Account with username "{username}" has been created')
@@ -36,6 +37,7 @@ def register(request):
 
 def profile(request, pk):
     user_profile = get_object_or_404(Profile, pk=pk)
+    # by default user profile displays all user posts
     user_posts = Post.objects.filter(user__profile=user_profile)
 
     # paginate posts by 20 items per page
@@ -45,6 +47,7 @@ def profile(request, pk):
     else:
         paginated = False
     page = request.GET.get('page')
+    # variable called items so pagination works in all views from base.html
     items = paginator.get_page(page)
 
     context = {'profile': user_profile, 'items': items, 'paginated': paginated}
@@ -52,6 +55,7 @@ def profile(request, pk):
     return render(request, 'registration/profile.html', context)
 
 
+# saved user posts displayed in user profile
 def profile_saved(request, pk):
     user_profile = get_object_or_404(Profile, pk=pk)
     saved_posts = request.user.saved_posts.all()
@@ -70,11 +74,12 @@ def profile_saved(request, pk):
     return render(request, 'registration/profile_saved.html', context)
 
 
+# users which profile's user follows
 def profile_following(request, pk):
     user_profile = get_object_or_404(Profile, pk=pk)
     user_following = user_profile.following.all()
 
-    # paginate posts by 20 items per page
+    # paginate posts by 40 items per page
     paginator = Paginator(user_following, 40)
     if paginator.num_pages > 1:
         paginated = True
@@ -88,11 +93,12 @@ def profile_following(request, pk):
     return render(request, 'registration/profile_following.html', context)
 
 
+# users which profile's user is followed by
 def profile_followers(request, pk):
     user_profile = get_object_or_404(Profile, pk=pk)
     user_followers = user_profile.followers.all()
 
-    # paginate posts by 20 items per page
+    # paginate posts by 40 items per page
     paginator = Paginator(user_followers, 40)
     if paginator.num_pages > 1:
         paginated = True
@@ -137,6 +143,7 @@ def profile_delete(request):
     return redirect('home')
 
 
+# creates an end point for user follow api
 class UserFollowAPI(APIView):
     authentication_classes = (authentication.SessionAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
@@ -159,4 +166,5 @@ class UserFollowAPI(APIView):
 
         data = {'authenticated': authenticated, 'following': following}
 
+        # return json data for javascript consumption
         return Response(data)
