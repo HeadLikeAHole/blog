@@ -1,33 +1,36 @@
 <div class="comments-info">
-  {# ttotal amount of comments #}
-  <p class="comments-left">Comments: {{ post.comment_set.all.count }}</p>
+  <div class="comments-info-left">
+    {# total amount of comments #}
+    <p>Comments: {{ post.comment_set.all.count }}</p>
 
-  {# like button #}
-  {# data-api-like-url contains value returned by api_like_url method defined in Post model which is grabbed by js script #}
-  <button
-      class="btn-like"
-      data-api-like-url="{{ post.get_api_like_url }}"
-  >
-    {% if user in post.likes.all %}
-      {{ post.likes.count }} Unlike
-    {% else %}
-      {{ post.likes.count }} Like
+    {# like button #}
+    {# data-api-like-url contains value returned by api_like_url method defined in Post model which is grabbed by js script #}
+    <button
+        class="btn-like"
+        data-api-like-url="{{ post.get_api_like_url }}"
+    >
+      {% if user in post.likes.all %}
+        {{ post.likes.count }} Unlike
+      {% else %}
+        {{ post.likes.count }} Like
+      {% endif %}
+    </button>
+
+    {# save and unsave links #}
+    {# data-api-save-url contains value returned by api_save_url method defined in Post model which is grabbed by js script #}
+    <a href="" class="save gray-link" data-api-save-url="{{ post.get_api_save_url }}">
+      {% if user in post.saved_by.all %}
+        Unsave
+      {% else %}
+        Save
+      {% endif %}
+    </a>
+  </div>
+  <div class="comments-info-right">
+    {% if user.is_authenticated %}
+      <p>Logged in as <a href="{% url 'profile' user.pk %}" class="gray-link">{{ user.username }}</a></p>
     {% endif %}
-  </button>
-
-  {# save and unsave links #}
-  {# data-api-save-url contains value returned by api_save_url method defined in Post model which is grabbed by js script #}
-  <a href="" class="save gray-link" data-api-save-url="{{ post.get_api_save_url }}">
-    {% if user in post.saved_by.all %}
-      Unsave
-    {% else %}
-      Save
-    {% endif %}
-  </a>
-
-  {% if user.is_authenticated %}
-    <p class="comments-right">Logged in as <a href="{% url 'profile' user.pk %}" class="gray-link">{{ user.username }}</a></p>
-  {% endif %}
+  </div>
 </div>
 
 <div class="comments">

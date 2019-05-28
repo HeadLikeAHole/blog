@@ -24,7 +24,7 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
         # methods from PIL library
         img = Image.open(self.image.path)
-        if img.height > 360 or img.width > 360:
-            output_size = (360, 360)
+        if img.height > 1080 or img.width > 1080:
+            output_size = (1080, 1080)
             img.thumbnail(output_size)
             img.save(self.image.path)
