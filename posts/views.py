@@ -27,7 +27,7 @@ def home(request):
         # if search was submitted filter posts by query
         posts = Post.objects.filter(
             Q(user__username__icontains=query) | Q(title__icontains=query) | Q(text__icontains=query)
-        )
+        ).distinct()
         if not posts.exists():
             no_results = True
 

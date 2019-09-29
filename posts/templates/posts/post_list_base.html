@@ -14,6 +14,7 @@
       <div class="post-list-info">
         <div class="post-list-info-top" >
           Posted by <a href="{% url 'profile' item.user.pk %}" class="gray-link">{{ item.user }}</a> {{ item.published|timesince }} ago
+          {% if item.published != item.updated %} (edited){% endif %}
         </div>
         <div class="post-list-info-bottom comment-section" >
           <a href="{% url 'post_detail' item.slug %}#comment-section" class="gray-link">{{ item.comment_set.all.count }} comment{{ item.comment_set.all.count|pluralize }}</a>

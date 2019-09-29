@@ -447,6 +447,12 @@ form ul {
     float: right;
 }
 
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 .profile p {
     margin-top: 0.5rem;
 }

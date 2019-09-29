@@ -59,7 +59,7 @@
               <div class="edit-hide">
                 <div class="comment-above">
                   Posted by <a href="{% url 'profile' comment.user.pk %}" class="gray-link">{{ comment.user }}</a>
-                  {{ comment.published|timesince }} ago
+                  {{ comment.published|timesince }} ago{% if comment.published != comment.updated %} (edited){% endif %}
                 </div>
                 <p>{{ comment.text }}</p>
                 <div class="comment-below">
@@ -120,7 +120,7 @@
                       <div class="edit-hide">
                         <div class="comment-above">
                           Posted by <a href="{% url 'profile' child.user.pk %}" class="gray-link">{{ child.user }}</a>
-                          {{ child.published|timesince }} ago
+                          {{ child.published|timesince }} ago{% if child.published != child.updated %} (edited){% endif %}
                         </div>
                         <p>{{ child.text }}</p>
                         <div class="comment-below">
