@@ -3,7 +3,7 @@ chardet==3.0.4
 Django==2.1.7
 django-markdownx==2.0.28
 django-pagedown==1.0.6
-djangorestframework==3.9.2
+djangorestframework==3.11.2
 Faker==1.0.6
 idna==2.8
 Markdown==3.1
